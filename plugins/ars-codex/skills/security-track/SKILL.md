@@ -74,8 +74,19 @@ Read the relevant reference BEFORE the corresponding task:
    Calibrate against the file's eight standard rejection anchors. Before
    the panel runs, R0 executes the Phase-0 manuscript-compliance check
    (personas file § Phase-0); any FAIL row prefixes the final verdict with
-   "CONDITIONAL ON COMPLIANCE FIX". This composes with — never replaces —
-   the stock review workflow.
+   "CONDITIONAL ON COMPLIANCE FIX". **Sprint contract:** when the review
+   workflow runs a paper-blind pre-commitment phase, load
+   `contracts/reviewer/security_full.json` from this skill instead of the
+   stock reviewer contract — it pre-commits security-conference dimensions
+   (threat-model soundness, evaluation adequacy incl. adaptive-adversary/
+   testbed/device-diversity bars, novelty vs Big-4 prior work, deployment
+   realism, ethics/disclosure adequacy, reproducibility, presentation) with
+   stock-identical failure-condition grammar. Internal decisions map to the
+   TARGET venue's vocabulary at output (playbook §1): NDSS 1:1; S&P
+   accept→Accept (warn-level findings become the public meta-review draft),
+   everything else→Reject; CCS major_revision→Reject; USENIX '26+
+   minor_revision→Accepted on Shepherd Approval, major_revision→Rejected.
+   This composes with — never replaces — the stock review workflow.
 4. **Anonymity:** strict double-blind is the default; apply the
    anonymization checklist in `references/security_paper_conventions.md`
    during formatting and citation passes.

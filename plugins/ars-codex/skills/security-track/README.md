@@ -19,6 +19,7 @@
 | `references/conference_ranking_2025.json` | 22 会 CIF 排名快照（每年更新） |
 | `references/deadlines_current.md` | 截稿日历（**生成文件，勿手改**） |
 | `scripts/fetch_deadlines.py` | 截稿日历拉取脚本（每次 `git sync-upstream` 自动执行，同步到 plugins/ 镜像） |
+| `contracts/reviewer/security_full.json` | 安全顶会版 sprint contract（盲态预提交标尺；Schema 13.2 验证通过） |
 
 本 skill 在仓库中有两份拷贝：`skills/security-track/`（源，直装路径）与
 `plugins/ars-codex/skills/security-track/`（插件物化镜像）。修改源后由
