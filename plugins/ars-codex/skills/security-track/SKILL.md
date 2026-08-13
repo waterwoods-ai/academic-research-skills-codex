@@ -50,6 +50,7 @@ Read the relevant reference BEFORE the corresponding task:
 | Writing / outlining / drafting / revising | `references/security_paper_conventions.md` |
 | Peer-review simulation | `references/security_reviewer_personas.md` |
 | Ranking / tier questions | `references/conference_ranking_2025.json` |
+| Reviewer comments / rebuttal / revision / re-review | `references/major_revision_playbook.md` |
 
 ## Overrides of stock defaults
 
@@ -64,9 +65,11 @@ Read the relevant reference BEFORE the corresponding task:
 3. **Reviewer simulation:** use the five personas in
    `references/security_reviewer_personas.md` (PC Chair, Systems/CPS,
    IoT/embedded, Adversarial-ML, threat-model skeptic) instead of
-   journal-field personas. Verdict vocabulary: Accept / Minor revision /
-   Major revision (numbered binding criteria) / Reject. Calibrate against
-   the file's eight standard rejection anchors. This composes with — never
+   journal-field personas. Verdict vocabulary: the TARGET venue's exact
+   decision names per `references/major_revision_playbook.md` §1 (S&P:
+   Accept/Reject only; NDSS: 4-tier incl. Major Revision; CCS: Accept/Minor
+   revision/Reject; USENIX '26+: Accepted/Shepherd Approval/Rejected).
+   Calibrate against the file's eight standard rejection anchors. This composes with — never
    replaces — the stock review workflow.
 4. **Anonymity:** strict double-blind is the default; apply the
    anonymization checklist in `references/security_paper_conventions.md`
