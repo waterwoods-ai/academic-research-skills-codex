@@ -14,7 +14,7 @@ overlay and use stock behavior.
 ## Required reading before paper work
 
 Before planning, outlining, drafting, reviewing, or revising a paper, read
-the relevant files from `custom/security-track/`:
+the relevant files from `skills/security-track/references/`:
 
 | Task | Read first |
 |---|---|
@@ -38,14 +38,14 @@ the relevant files from `custom/security-track/`:
 
 ## Deadlines are never recalled from memory
 
-Quote deadlines ONLY from `custom/security-track/deadlines_current.md`.
+Quote deadlines ONLY from `skills/security-track/references/deadlines_current.md`.
 If its `Fetched` timestamp is older than 7 days, refresh first:
-`python3 custom/security-track/fetch_deadlines.py`. If the fetch fails,
+`python3 skills/security-track/scripts/fetch_deadlines.py`. If the fetch fails,
 say the calendar is stale — do not fill in dates from model memory.
 
 ## Repo conventions (fork hygiene)
 
 - `main` mirrors upstream (ff-only); ALL personal work goes on `dev`.
-- Customizations are additive only: new files in `custom/` (or this file).
+- Customizations are additive only: the `skills/security-track/` skill + its `plugins/ars-codex/skills/security-track/` mirror (or this file).
   Never edit upstream-owned files — that is what keeps `git sync-upstream`
   conflict-free.
