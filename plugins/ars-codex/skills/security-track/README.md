@@ -58,6 +58,14 @@ python3 "$HOME/.codex/skills/.system/skill-installer/scripts/install-skill-from-
 
 ## 使用
 
+> **关于斜杠命令**：Codex CLI 0.147+ 已移除自定义斜杠命令通道（custom
+> prompts 机制被废弃且不再加载，插件也不携带命令），`/ars-*` 是 Claude Code
+> 专属形态。在 Codex 中用下面两种等价方式调用：
+>
+> 1. `$academic-research-suite ars-reviewer <论文>` —— 输入 `$` 后自动补全
+> 2. 直接发裸别名文本：`ars-reviewer <论文>`（skill 触发描述已注册全部
+>    ars-* 别名，无斜杠、不经过命令弹窗，最省事）
+
 **自动激活**：论文任务涉及安全会议即触发（会议名、threat model、CPS/IoT/
 AI security 等触发词）。也可显式调用 `$security-track`。用户为安全研究方向
 时，所有论文任务默认按安全会议处理；明确说明非安全研究则回退 stock 行为。
