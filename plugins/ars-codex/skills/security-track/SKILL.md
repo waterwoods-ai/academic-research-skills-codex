@@ -18,8 +18,10 @@ description: >
   method, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计.
 metadata:
   version: "0.1.0"
-  last_updated: "2026-08-13"
+  last_updated: "2026-08-14"
   status: active
+  data_access_level: verified_only
+  task_type: open-ended
   overlay: true
   related_skills:
     - academic-research-suite
