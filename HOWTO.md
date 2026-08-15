@@ -14,7 +14,7 @@
 
 ## 阶段 0 · 一次性准备
 
-**Step 0.1 确认安装**:新开会话,问「NDSS 的 Major Revision 流程是什么」。
+**Step 0.1 确认安装**:新开会话,ask: `What is the NDSS Major Revision process?`。
 agent 去读 `major_revision_playbook.md` 作答 = 正常;凭记忆直接答 = 覆盖层没生效。
 
 **Step 0.2 首跑验证(建议)**:拿任一篇公开安全论文跑
@@ -29,7 +29,7 @@ persona;④判定只用 NDSS 四档词汇。四点全过再正式使用。
 **Step 1 文献综述与 gap 登记**
 
 ```text
-ars-lit-review <你的大方向,如:ICS 传感器异常检测>,确保覆盖全面
+ars-lit-review <your area, e.g. ICS sensor anomaly detection>, ensure broad coverage
 ```
 
 - 📄 产出:文献综述 + gap 登记册——每个 gap 带三件套:失败的检索记录、
@@ -39,7 +39,7 @@ ars-lit-review <你的大方向,如:ICS 传感器异常检测>,确保覆盖全�
 **Step 2 课题延伸(RQ 生成)**
 
 ```text
-基于这些 gap 延伸课题。我的资源:<如实填:有哪些测床/设备/数据集访问>
+Extend research topics from these gaps. My resources: <honestly list: testbeds / devices / dataset access you have>
 ```
 
 - 📄 产出:RQ 卡片(威胁模型草图 + 贡献类型 + 目标会议适配 + 可行性),
@@ -49,7 +49,7 @@ ars-lit-review <你的大方向,如:ICS 传感器异常检测>,确保覆盖全�
 **Step 3 课题可行性判定(go/no-go)**
 
 ```text
-验证这个课题是否可做:<选中的 RQ>
+Verify the viability of this topic: <selected RQ>
 ```
 
 - 📄 产出:SATURATED(点名占坑论文)/ MISFRAMED(给出重述)/
@@ -59,7 +59,7 @@ ars-lit-review <你的大方向,如:ICS 传感器异常检测>,确保覆盖全�
 **Step 4 找突破点(dogma 提取)**
 
 ```text
-这个方向的先行工作共享哪些未言明的假设?哪条最值得挑战?
+What unstated assumptions do prior works in this area share? Which one is most worth challenging?
 ```
 
 - 📄 产出:共识假设清单(例:"防御者假设攻击者碰不到训练数据")
@@ -72,8 +72,8 @@ ars-lit-review <你的大方向,如:ICS 传感器异常检测>,确保覆盖全�
 **Step 5 提出方法 / 评估你的方法**
 
 ```text
-为 RQ-<n> 提出新方法               ← 从零提出
-评估我的方法的 novelty 和 contribution:<方法描述>   ← 带自己的方法进来
+Propose a new method for RQ-<n>                       ← from scratch
+Evaluate the novelty and contribution of my method: <description>   ← bring your own method
 ```
 
 - 📄 产出:**Contribution Card**——3–5 条可证伪 claim、每条的 novelty 判定
@@ -96,7 +96,7 @@ CPS=真测床+物理后果 / 工具类=真实软件胜最强基线 / 理论类=�
 **Step 7 设计实验(预注册 + 冻结)**
 
 ```text
-为这个方法设计验证实验
+Design validation experiments for this method
 ```
 
 - 📄 产出:验证计划——每条 claim 的实验、指标、**数值化成功标准**、
@@ -107,7 +107,7 @@ CPS=真测床+物理后果 / 工具类=真实软件胜最强基线 / 理论类=�
 **Step 8 执行实验**
 
 ```text
-实现并运行实验
+Implement and run the experiments
 ```
 
 - Codex 直接在你的环境写代码、跑实验、读日志——这正是它的强项
@@ -118,7 +118,7 @@ CPS=真测床+物理后果 / 工具类=真实软件胜最强基线 / 理论类=�
 **Step 9 改进循环(仅当有 UNMET)**
 
 ```text
-<claim-2> 的标准未达,改进方法
+The criterion for <claim-2> is unmet — improve the method
 ```
 
 - 每轮机制:点名缺陷 → **一个**针对性修改(带机制假设)→ 只重跑受影响
@@ -133,7 +133,7 @@ CPS=真测床+物理后果 / 工具类=真实软件胜最强基线 / 理论类=�
 **Step 10 投稿前对抗压测**
 
 ```text
-ars-reviewer — target venue: <会议>,评审对象:方法 + 实验台账(还没写论文)
+ars-reviewer — target venue: <会议>,review target: method + experiment ledger (no paper yet)
 ```
 
 - 目的:趁便宜暴露致命异议;发现的问题按 Step 9 的方式修一轮
@@ -142,7 +142,7 @@ ars-reviewer — target venue: <会议>,评审对象:方法 + 实验台账(还�
 
 ```text
 ars-full — target venue: <会议>
-材料:Contribution Card + 台账 + 大纲(如有)
+Materials: Contribution Card + provenance ledger + outline (if any)
 ```
 
 - 📄 产出:安全论文结构全文(Threat Model / Ethics 章、numeric 引用、
@@ -176,7 +176,7 @@ ars-reviewer re-review
 **Step 14 选轮次与投稿**
 
 ```text
-帮我做 <会议> 的投稿规划
+Plan my submission to <venue>
 ```
 
 - 截稿从日历读取(过期自动刷新);倒排时间表;投稿事务(注册冻结、
@@ -187,7 +187,7 @@ ars-reviewer re-review
 
 ```text
 ars-revision-coach — venue: <会议>, decision: <判定档>
-<粘贴 decision letter 原文>
+<paste the decision letter verbatim>
 ```
 
 - 📄 产出:按 venue+判定档的 Revision Roadmap + 响应包结构(USENIX 四件套
