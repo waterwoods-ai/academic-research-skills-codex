@@ -13,7 +13,7 @@ description: >
   NDSS, CCS, USENIX Security, threat model, responsible disclosure, artifact
   evaluation, CPS security, ICS security, IoT security, firmware, AI
   security, adversarial ML,
-  research gap, extend topic, propose method, novelty assessment,
+  research gap, extend topic, topic viability, go/no-go, propose method, novelty assessment,
   contribution, experiment design, falsification, run experiments, improve
   method, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计.
 metadata:
