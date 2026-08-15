@@ -12,7 +12,10 @@ description: >
   paper. Triggers: security paper, security conference, Big 4, S&P, Oakland,
   NDSS, CCS, USENIX Security, threat model, responsible disclosure, artifact
   evaluation, CPS security, ICS security, IoT security, firmware, AI
-  security, adversarial ML, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会.
+  security, adversarial ML,
+  research gap, extend topic, propose method, novelty assessment,
+  contribution, experiment design, falsification, run experiments, improve
+  method, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计.
 metadata:
   version: "0.1.0"
   last_updated: "2026-08-13"
@@ -52,6 +55,7 @@ Read the relevant reference BEFORE the corresponding task:
 | Ranking / tier questions | `references/conference_ranking_2025.json` |
 | Reviewer comments / rebuttal / revision / re-review | `references/major_revision_playbook.md` |
 | Literature search / coverage expansion ("broad coverage", lit-review, gap analysis) | `references/perspective_retrieval_protocol.md` |
+| Research loop: gap → RQ → method proposal/evaluation (novelty & contribution) → experiment design/run → bounded improvement → paper | `references/research_loop_protocol.md` |
 
 ## Overrides of stock defaults
 
