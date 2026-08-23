@@ -32,9 +32,12 @@ the relevant files from `skills/security-track/references/`:
   explicit threat-model section is incomplete.
 - **Reviewer simulation:** use the five personas in
   `security_reviewer_personas.md` (PC Chair, CPS, IoT/embedded,
-  Adversarial-ML, threat-model skeptic), the verdict vocabulary
-  Accept / Minor revision / Major revision (numbered binding criteria) /
-  Reject, and the eight rejection anchors in that file.
+  Adversarial-ML, threat-model skeptic). Verdict vocabulary is
+  venue-specific (per `major_revision_playbook.md` §1) — S&P: Accept /
+  Reject; NDSS: Accept / Minor Revision / Major Revision / Reject; CCS:
+  Accept / Minor revision / Reject; USENIX '26+: Accepted / Accepted on
+  Shepherd Approval / Rejected. Only NDSS still has a Major Revision.
+  Calibrate against the standard rejection anchors in that file.
 
 ## Deadlines are never recalled from memory
 

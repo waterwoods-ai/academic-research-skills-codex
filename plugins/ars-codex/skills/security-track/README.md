@@ -13,7 +13,7 @@
 | `SKILL.md` | 触发条件 + 对 stock 套件的覆盖规则（引用格式、论文结构、审稿模拟、双盲、截稿铁律） |
 | `references/big4_venue_profiles.md` | 四大会档案（经官方 CFP 逐条核实，2023–2027 各版） |
 | `references/security_paper_conventions.md` | 安全论文行文规范：Threat Model 章、评估门槛、责任披露、匿名化清单 |
-| `references/security_reviewer_personas.md` | 5 人安全审稿面板 + 八条标准拒稿锚点 |
+| `references/security_reviewer_personas.md` | 5 人安全审稿面板 + 标准拒稿锚点 |
 | `references/major_revision_playbook.md` | 四大会多轮评审实战手册：rebuttal / revision / re-review + 模式映射 |
 | `references/perspective_retrieval_protocol.md` | 视角驱动检索协议（STORM 检索侧机制改造，opt-in） |
 | `references/conference_ranking_2025.json` | 22 会 CIF 排名快照（每年更新） |
