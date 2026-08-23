@@ -15,7 +15,8 @@ description: >
   security, adversarial ML,
   research gap, extend topic, topic viability, go/no-go, propose method, novelty assessment,
   contribution, experiment design, falsification, run experiments, improve
-  method, security framing, dissect this paper, peruse this paper, peruse paper, introduction
+  method, method substitution, rename check, prior art check, taxonomy,
+  define categories, security framing, dissect this paper, peruse this paper, peruse paper, introduction
   structure, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计, 精读, 拆解论文.
 metadata:
   version: "0.1.0"
@@ -56,6 +57,7 @@ Read the relevant reference BEFORE the corresponding task:
 | Writing / outlining / drafting / revising | `references/security_paper_conventions.md` |
 | New research idea — is this a security paper? (framing / novelty type) | `references/security_framing_protocol.md` |
 | Building or checking a threat model | `references/threat_model_workbench.md` |
+| Changing / improving / substituting a method, esp. to rescue a failing experiment (anti-rename) | `references/method_change_provenance.md` |
 | Deep-read ONE paper (dissect / peruse / 精读) — NOT multi-paper lit-review | `references/paper_dissection_protocol.md` |
 | Peer-review simulation | `references/security_reviewer_personas.md` |
 | Ranking / tier questions | `references/conference_ranking_2025.json` |
