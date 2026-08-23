@@ -15,7 +15,7 @@ description: >
   security, adversarial ML,
   research gap, extend topic, topic viability, go/no-go, propose method, novelty assessment,
   contribution, experiment design, falsification, run experiments, improve
-  method, security framing, dissect this paper, peruse paper, introduction
+  method, security framing, dissect this paper, peruse this paper, peruse paper, introduction
   structure, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计, 精读, 拆解论文.
 metadata:
   version: "0.1.0"
