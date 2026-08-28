@@ -17,7 +17,7 @@ description: >
   contribution, experiment design, falsification, run experiments, improve
   method, method substitution, rename check, prior art check, taxonomy,
   define categories, security framing, dissect this paper, peruse this paper, peruse paper, introduction
-  structure, subfield reviewer bar, retrospective, lessons learned, knowledge index, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计, 精读, 拆解论文.
+  structure, subfield reviewer bar, retrospective, lessons learned, knowledge index, mentor me, guide me step by step, be my research mentor, 一步一步指导, 带我完成, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计, 精读, 拆解论文.
 metadata:
   version: "0.1.0"
   last_updated: "2026-08-14"
@@ -64,6 +64,7 @@ Read the relevant reference BEFORE the corresponding task:
 | Reviewer comments / rebuttal / revision / re-review | `references/major_revision_playbook.md` |
 | Literature search / coverage expansion ("broad coverage", lit-review, gap analysis) | `references/perspective_retrieval_protocol.md` |
 | Research loop: gap → RQ → method proposal/evaluation (novelty & contribution) → experiment design/run → bounded improvement → paper | `references/research_loop_protocol.md` |
+| Step-by-step Socratic mentor (idea→submission, one step per turn, stateful) — NOT ars-plan's whole-plan-at-once | `references/security_mentor_protocol.md` |
 | Subfield reviewer bar / best practice (load at S1/S2/S3/S7) | `references/knowledge_index.md` |
 | Skill self-check (run manually or via `git sync-upstream`) | `tests/run_all_checks.sh` → behavior linter + workspace validator + knowledge-index consistency |
 | Post-submission / post-review retrospective (L2 knowledge distillation) | `references/research_loop_protocol.md` § S8.5 + `references/knowledge_notes/` |
