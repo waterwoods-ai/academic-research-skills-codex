@@ -10,7 +10,7 @@ description: >
   task targets a security venue: venue selection, submission planning,
   deadline questions, outlining, drafting, reviewing, or revising a security
   paper. Triggers: security paper, security conference, Big 4, S&P, Oakland,
-  NDSS, CCS, USENIX Security, threat model, responsible disclosure, artifact
+  NDSS, CCS, USENIX Security, threat model, CVE, MITRE ATT&CK, ATT&CK technique mapping, responsible disclosure, artifact
   evaluation, CPS security, ICS security, IoT security, firmware, AI
   security, adversarial ML,
   research gap, extend topic, topic viability, go/no-go, propose method, novelty assessment,
@@ -57,6 +57,7 @@ Read the relevant reference BEFORE the corresponding task:
 | Planning / outlining / writing / drafting / revising (ars-plan, ars-outline, ars-full) — use the security chapter structure, NOT IMRaD | `references/security_paper_conventions.md` |
 | New research idea — is this a security paper? (framing / novelty type) | `references/security_framing_protocol.md` |
 | Building or checking a threat model | `references/threat_model_workbench.md` |
+| Connecting the work to CVE / MITRE ATT&CK (mapping, technique ids) | `references/cve_attack_mapping.md` |
 | Changing / improving / substituting a method, esp. to rescue a failing experiment (anti-rename) | `references/method_change_provenance.md` |
 | Deep-read ONE paper (dissect / peruse / 精读) — NOT multi-paper lit-review | `references/paper_dissection_protocol.md` |
 | Peer-review simulation | `references/security_reviewer_personas.md` |
