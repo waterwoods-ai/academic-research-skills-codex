@@ -17,7 +17,7 @@ description: >
   contribution, experiment design, falsification, run experiments, improve
   method, method substitution, rename check, prior art check, taxonomy,
   define categories, security framing, dissect this paper, peruse this paper, peruse paper, introduction
-  structure, subfield reviewer bar, retrospective, lessons learned, knowledge index, mentor me, guide me step by step, be my research mentor, pre-registration, pre-register, research integrity, cherry-picking, seed hacking, HARKing, data leakage, eval-set overfitting, reproducibility check, 一步一步指导, 带我完成, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计, 精读, 拆解论文, 预注册, 研究诚信, 实验诚信.
+  structure, subfield reviewer bar, retrospective, lessons learned, knowledge index, mentor me, guide me step by step, be my research mentor, pre-registration, pre-register, research integrity, cherry-picking, seed hacking, HARKing, data leakage, eval-set overfitting, reproducibility check, humanize, humanizer, polish prose, language polish, de-slop, remove AI tells, AI slop, clarity pass, 一步一步指导, 带我完成, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计, 精读, 拆解论文, 预注册, 研究诚信, 实验诚信, 润色, 语言润色, 去AI味.
 metadata:
   version: "0.1.0"
   last_updated: "2026-08-14"
@@ -27,6 +27,7 @@ metadata:
   overlay: true
   related_skills:
     - academic-research-suite
+    - academic-humanizer
 ---
 
 # Security Track Overlay
@@ -55,6 +56,7 @@ Read the relevant reference BEFORE the corresponding task:
 |---|---|
 | Venue choice, submission planning | `references/big4_venue_profiles.md` + `references/deadlines_current.md` |
 | Planning / outlining / writing / drafting / revising (ars-plan, ars-outline, ars-full) — use the security chapter structure, NOT IMRaD | `references/security_paper_conventions.md` |
+| Polishing AI-assisted prose of a security paper (de-slop, remove AI tells, match claims to evidence) — drive the standalone `academic-humanizer` skill with security-venue calibration; run at S8 / revision AFTER content is frozen | `references/security_humanizing_overlay.md` |
 | New research idea — is this a security paper? (framing / novelty type) | `references/security_framing_protocol.md` |
 | Building or checking a threat model | `references/threat_model_workbench.md` |
 | Connecting the work to CVE / MITRE ATT&CK (mapping, technique ids) | `references/cve_attack_mapping.md` |
