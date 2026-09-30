@@ -28,6 +28,7 @@ metadata:
   related_skills:
     - academic-research-suite
     - academic-humanizer
+    - novelty-engine
 ---
 
 # Security Track Overlay

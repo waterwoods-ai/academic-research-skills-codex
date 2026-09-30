@@ -49,7 +49,7 @@ say the calendar is stale — do not fill in dates from model memory.
 ## Repo conventions (fork hygiene)
 
 - `main` mirrors upstream (ff-only); ALL personal work goes on `dev`.
-- Customizations are additive only: the `skills/security-track/` skill + its `plugins/ars-codex/skills/security-track/` mirror (or this file).
+- Customizations are additive only: the `skills/security-track/` and `skills/novelty-engine/` skills + their `plugins/ars-codex/skills/<name>/` mirrors (or this file).
   Never edit upstream-owned files — that is what keeps `git sync-upstream`
   conflict-free.
 
