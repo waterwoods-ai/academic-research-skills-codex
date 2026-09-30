@@ -11,7 +11,7 @@
 **1. 装 skill**
 - 🧑‍🏫 Claude Code:`/plugin marketplace add waterwoods-ai/academic-research-skills` → `/plugin install academic-research-skills@academic-research-skills`
 - 🔍 Codex:`codex plugin marketplace add waterwoods-ai/academic-research-skills-codex --ref dev` → `codex plugin add ars-codex@ars-codex`
-- 🎓 opencode(可选):把 fork 的 5 个 skill symlink 进 `~/.claude/skills/`(见 HOWTO Step 0.4)
+- 🎓 opencode(可选):把 fork 的 6 个 skill(5 个 ARS / security-track + `novelty-engine`)symlink 进 `~/.claude/skills/`(见 HOWTO Step 0.1)
 
 **2. 建项目 + 锚文件**(让 skill 在你论文目录里确定性加载)
 ```bash
@@ -33,9 +33,12 @@ What is the NDSS Major Revision process, and which Big-4 venues still have one?
 
 | 你在做什么 | 复制这段(前缀:Claude 用 `/ars-`,Codex/opencode 用裸别名) |
 |---|---|
-| **找课题** 🎓 | `ars-lit-review <你的方向>, ensure broad coverage` |
+| **还没有题目** 🧑‍🏫 | `find-research-topic <大方向>`(仅 Claude Code;出 3–7 个候选题目) |
+| **找课题** 🎓 | `ars-lit-review <你的方向>, ensure broad coverage`(ARS 自己检索,不用先给文献) |
 | **定课题** 🧑‍🏫🚦 | `Verify the research topic viability (go/no-go): <RQ>` |
-| **提/评方法** 🎓 | `Evaluate the novelty and contribution of my method: <描述>` |
+| **从零提方法** 🎓 | `Run novelty-engine Phases 1–4 for the RQ in ./research_question.md`(生成器;完整 prompt 见 HOWTO Step 5) |
+| **评自己的方法** 🎓 | `Evaluate the novelty and contribution of my method: <描述>` |
+| **查某个想法是否已发表** 🧑‍🏫 | `novelty-filter <基线论文>`(仅 Claude Code;只过滤、不生成) |
 | **精读一篇论文** | `Peruse this paper: <path> — full single-paper dissection` |
 | **设计实验** 🎓🧑‍🏫🚦 | `Design validation experiments for this method`(导师审后你标 FROZEN) |
 | **跑实验** 🎓 | `Implement and run the experiments`(数字只进 `./ledger/`) |
