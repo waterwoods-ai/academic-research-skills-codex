@@ -1,10 +1,10 @@
 # ARS-Codex
 
-[![Version](https://img.shields.io/badge/version-v0.1.24-blue)](VERSION)
+[![Version](https://img.shields.io/badge/version-v3.22.2-blue)](VERSION)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC%20BY--NC%204.0-lightgrey)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Sponsor](https://img.shields.io/badge/sponsor-Buy%20Me%20a%20Coffee-orange?logo=buy-me-a-coffee)](https://buymeacoffee.com/crucify020v)
 
-ARS-Codex は、[Academic Research Skills（ARS）Claude Code 版](https://github.com/Imbad0202/academic-research-skills) の Codex ネイティブな sibling ディストリビューションです。独自の plugin ID、パッケージング、バージョン、および runtime adapter を持ちます。
+ARS-Codex は、[Academic Research Skills（ARS）Claude Code 版](https://github.com/Imbad0202/academic-research-skills) の Codex ネイティブな sibling ディストリビューションです。独自の plugin ID、パッケージング、および runtime adapter を持ち、リリース番号は `3.22.0` から内包する ARS に揃えます。
 
 このリポジトリは、ARS ワークフローの内容を単一の Codex スキルとして同梱（ベンダリング）しています。
 
@@ -26,7 +26,7 @@ skills/academic-research-suite/
     shared/
 ```
 
-元の Claude Code ARS チェックアウトは変更されません。アップストリームの内容は GitHub の新規クローンからコピーされ、`skills/academic-research-suite/SKILL.md` の Codex ルータを通じて適合されます。
+元の Claude Code ARS チェックアウトは変更されません。アップストリームの内容は検証済みのリリースコミットからコピーされ、`skills/academic-research-suite/SKILL.md` の Codex ルータを通じて適合されます。
 
 ## Claude Code ARS との関係
 
@@ -36,11 +36,17 @@ Claude Code ネイティブのスキルレイアウト、Claude 固有の agent-
 
 ## バージョニング
 
-この ARS-Codex パッケージのバージョンは `0.1.24` です。リポジトリルートの `VERSION` ファイル、`skills/academic-research-suite/SKILL.md` のメタデータバージョン、および `skills/academic-research-suite/manifest.json` の `adapter_version` は、ベンダリングされた ARS スイートとは独立して Codex パッケージのバージョンを管理します。ベンダリングされたアップストリームのバージョンは `manifest.source_repositories[]` にコミット単位で記録されています。
+この ARS-Codex パッケージのバージョンは `3.22.2` です。リポジトリルートの `VERSION` ファイル、`skills/academic-research-suite/SKILL.md` のメタデータバージョン、および `skills/academic-research-suite/manifest.json` の `adapter_version` は、`3.22.0` から内包する ARS スイートと同じバージョン番号を使います。過去の `0.1.x` 番号は履歴として保持します。上流のバージョン、tag、完全な commit は `manifest.source_repositories[]` に記録します。
 
 パッケージレベルの変更内容は [`CHANGELOG.md`](CHANGELOG.md) にまとめられています。
 
-現在ベンダリングされている ARS ソースは `Imbad0202/academic-research-skills@5769d7b51adfba45593ad95721436fd114aaa735`（`v3.19.0` 以降のアップストリーム `main`、2026-08-06。スイートバージョンは 3.19.0 のまま）を追跡しています。reviewer 強化トラック（ロールスコープの採点 contract と棄権機構、型付き証拠アンカーとカバレッジ receipt、Stage 3' の三ゲート re-review 事前コミット contract、算術 receipt 文法と deterministic 計算機、空 dissent ルール）、新しい reviewer held-out 評価セットと裁定済み cohort、医学ジャーナル開示ポリシーと fail-closed レンダリング、中国語文献 resolver client、CARE／STARD 2015／TRIPOD+AI 要約ガイダンスが追加され、v3.19 の PDF preflight・読了範囲 attestation・claim-drift ガード、v3.18 の cross-model reviewer／judge、キャッシュ再検証、リスク層別チェック、および既存の最小権限 contract も維持されています。
+ベンダリングした ARS は **v3.22.2**、`Imbad0202/academic-research-skills@7de1c9dfb7af9c02a9b57750761323f35a743aa2` に揃えています。v3.22.1 と v3.22.2 のローカル run ledger と引き継ぎ確認、決定的な略語チェック、指示とデータの境界拡張、明示的な意図のルーティング修正、証拠に基づく中国語 APA 7 引用チェックを取り込みます。新しいツールの決定的な動作は合成テストの対象ですが、プロンプトの遵守と Codex モデルの有効性は未測定です。言語ペアは現在 `zh-tw-en` のみで、スペイン語のトリガーは出力ロケールパックの提供を意味しません。Claude のモデル監査と評価資料は参考用であり、Codex のモデル方針を変更せず、Codex の性能測定でもありません。
+
+## モデルと実行方式
+
+この checkout の [project 設定](.codex/config.toml) は、プロジェクトを信頼した新しい Codex session で `gpt-6-astra` と `xhigh` reasoning を選びます。skill のインストールではこの設定はコピーされず、実行中の session のモデルも変更できません。Planner は通常の作業に `medium`、複雑な作業に `xhigh` を提案します。これは初期方針であり、最適と実測された設定ではありません。`ultra` は Codex で明示的に選ぶ難しい作業向けで、contained citation transport は拒否します。
+
+標準はネイティブの適応的な実行です。独立した作業を必要に応じて範囲の明確な subagent に渡し、lead agent も他の作業を続けます。固定 full-runtime topology と hooks は引き続き opt-in です。[モデル実行方針](skills/academic-research-suite/codex/model-runtime-policy.md)と[システムカード対応監査](skills/academic-research-suite/codex/audits/2026-09-06-model-alignment.md)を参照してください。
 
 ## ARS-Codex Plugin のインストール
 
@@ -241,35 +247,46 @@ ARS は元々 Claude Code 向けに作成されました。この Codex パッ�
 - ベンダリングされた `agents/*.md` ファイルはロールおよびフェーズプロンプトとして使用されます。
 - ベンダリングされた `commands/ars-*.md` ファイルはプロンプトレシピのみとして機能します。Codex はこれらをスラッシュコマンドとして登録しません。
 - ベンダリングされた `hooks/hooks.json` ファイルはアップストリームのトレーサビリティのためのみ保持されています。Codex はこのパッケージから Claude Code hooks をインストールしません。
-- ユーザーが明示的に委譲または並列 agent の作業を要求しない限り、Codex は自動的にバックグラウンド agent を起動しません。
+- Codex は現在のタスクと権限の範囲で独立した作業をネイティブ subagent に委譲でき、lead agent も他の有用な作業を続けます。
 - Web/ソース検証には Codex のブラウジング機能を使用し、現在の事実や外部情報が関係する場合はソースを引用する必要があります。
 - クロスモデル検証はデフォルトで無効です。この Codex パッケージで明示的に要求された場合は、`ars/shared/cross_model_verification.md` に従って provider を設定し、provider、model、送信される内容の種類を示したうえで、外部送信前にユーザーの明示的な同意を得てください。外部レビュアーは設定済み provider API を通じて呼び出され、現在の Codex model で代替実行されることはありません。
 - アップストリームの「fresh Claude Code session」という記述は、このパッケージでは新しい Codex セッションを意味します。Material Passport のリセットセマンティクスは引き続き適用されます。
 - 引用、ソース、統計、またはジャーナルポリシーが検証できない場合、Codex は根拠を捏生するのではなく、未検証としてマークする必要があります。
 
-### ARS v3.19+ パリティ
+### ARS v3.22.2 パリティ
 
-このパッケージは、Codex に同等の概念が存在する範囲で、アップストリーム ARS `main`（`5769d7b`、`v3.19.0` 以降。スイートバージョン 3.19.0）と同等のユーザー向けワークフロー内容を目指しています。
+このパッケージは、Codex に同等の概念が存在する範囲で、アップストリーム ARS `v3.22.2`（`7de1c9dfb7af9c02a9b57750761323f35a743aa2`）を適合し、モデルと runtime overlay を記録します。
 
 | アップストリーム ARS 機能 | Codex パッケージの動作 |
 |---|---|
 | インストール可能な単一プラグイン | 単一の `academic-research-suite` skill を同梱するネイティブ Codex plugin `ars-codex` |
 | `/ars-*` スラッシュコマンド | スキルルータ経由で `ars-*` エイリアスとしてエミュレート。ネイティブのスラッシュコマンドではありません |
 | `skills/` シンボリックリンクから自動検出される4つのアップストリームスキル | 単一の Codex ルータスキルがワークフローを選択し、ベンダリングされたワークフロー `WORKFLOW.md` ファイルを読み込みます |
-| プラグイン同梱の agent | agent ファイルはロール/フェーズプロンプトです。ユーザーが明示的に委譲サブ agent を要求しない限り、Codex はインラインで実行します |
-| `model: opus` / `model: sonnet` コマンドルーティング | Claude メタデータとして扱われます。Codex はアクティブなモデルを使用します |
+| プラグイン同梱の agent | ロール/フェーズプロンプトを、依存関係と runtime 権限に応じてインラインまたは範囲を限定したネイティブ subagent で実行します |
+| 重いコマンド（`ars-full`、`ars-reviewer`、`ars-revision-coach`）は `model:` を省略し、軽量モードは `model: sonnet` を保持 | 重いコマンドは現在の Codex セッションモデルを継承します。軽量モードの `sonnet` はアップストリーム Claude メタデータとして保持され、セッションモデルを上書きしません |
 | 保護対象 agent の `tools:` allowlist | 最小権限のロール境界として保持され、委譲された owner に Bash やネットワーク transport は付与されません |
 | Canonical cross-model handoff envelope | Dispatcher が envelope を検証し、同意後は payload のみを送信して、閉じた結果ルーティング contract に従います |
+| 用途を限定した Codex citation transport | 明示的に設定・要求され、同意が得られた場合のみ、狭い citation-integrity チェックに使用されます |
+| Run ledger と引き継ぎ確認 | passport ファイルがある場合、pipeline prompt はユーザーの原文、ステップの実行記録、ファイルハッシュをローカルに記録するよう呼び出し元に指示します。決定的なレポートが圧縮、再開、subagent の返却後の引き継ぎを確認しますが、新しい承認の根拠にはなりません |
+| 決定的な略語チェック | 呼び出し元が保存済みの草稿と要旨をローカルで検査し、部分的な検査範囲を明示します。レビュー添付は助言に限定し、判定、改訂ロードマップ、再レビュー基準の根拠にしません |
+| 指示とデータの境界およびルーティング | Workflow intake、dispatch、ツールで読む第三者の文章をデータとして扱い、明示的な要求は入力不足でも選択したモードに留めます。Claude の起動 hooks は有効化しません |
+| 中国語 APA 7 引用チェック | 著者省略の例外と参考文献の著者欄を保持し、画数順の逆転に証拠がある場合のみ並べ替えを提案します。目に見える構文エラーと未検証の出典主張を区別します |
+| 証拠に結び付いた review／revision | 永続的な evidence row、確認済み criteria、非ランキング roadmap、author adjudication、revision-evidence bundle を保持します |
+| Socratic の研究質問 authorship | 非収束だけでは system-authored candidate RQ を生成せず、non-generation モードからの退出にはユーザーの明示的な要求が必要です |
+| カテゴリ型 reviewer judgement と panel provenance | Live package は `NOT_CALIBRATED` のままとし、数値 score、weight、aggregate、ranking、二値 independence claim を捏造しません |
+| Review criteria と human-subjects authority | Venue／criteria と ethics／data-protection authority はユーザー確認を必須とし、Codex は承認を推測・模擬しません |
+| 任意の PDF content classifier | sandbox 化された classifier は opt-in advisory であり、構造的 PDF preflight の結果を上書きできません |
 | Cross-model Reviewer 2 と re-review judge | provider 設定と送信内容への同意がある場合のみ有効。固定席、Judge Record、単一モデル family／fallback の開示を保持します |
 | キャッシュ stale advisory とライブ再検証 | ローカルキャッシュが既定。stale 行は advisory のみで、`ARS_CACHE_REVALIDATE=1` がライブ書誌再検証を有効にします |
 | リスク層別 claim・scope・novelty チェック | 高影響 claim 優先サンプリングと、gate を阻害しない scope／search-bounded novelty advisory を保持します |
-| ローカル PDF 読取整合性 preflight | pypdf preflight と sidecar contract を同梱し、parser 不在や修復警告は明示的な `UNAVAILABLE` advisory のまま保持します |
-| 人間読了範囲 attestation | ユーザー所有の任意 `read_scope` と section locator を保持し、部分カバレッジを全文読了として扱いません |
-| 改訂 claim-drift ガード | claim-strength ladder、revision-evidence bundle、deterministic token-conservation checker、held-out 測定セットとテストを同梱します |
+| ローカル PDF 読取整合性 preflight | 構造的な pypdf preflight と sidecar contract が既定です。parser 不在や修復警告は明示的な `UNAVAILABLE` advisory のまま保持され、上記 v3.20 classifier は opt-in のみです |
+| 人間読了範囲 attestation | 新規 mark ごとにユーザー所有の `read_scope` を必須とし、scope のない legacy record は unknown のまま、部分カバレッジを全文読了として扱いません |
+| Claim coverage と限定的な評価基盤 | 正確な registered-claim coverage、drift disposition、claim-standing tool、blind ideation assignment は provenance と未測定境界を保持し、semantic completeness や correctness を証明しません |
+| 改訂 claim-drift ガード | v3.20 の非ランキング roadmap と author-adjudication contract を、claim-strength ladder、revision-evidence bundle、deterministic token-conservation checker、held-out 測定セットと組み合わせます |
 | Panel／degradation／pipeline-boundary の実行可能チェック | hermetic テストとともにベンダリングされ、オプションの full-runtime manifest から公開されます |
 | SessionStart および SubagentStop hooks（更新通知を含む） | トレーサビリティのためのみベンダリングされています。Codex は Claude hooks をインストールまたは実行しません |
 | Plugin marketplace の更新 | `codex plugin marketplace upgrade ars-codex` の後に `ars-codex@ars-codex` を再追加します。Skill の直接インストールは引き続き再インストールまたは pull で更新します |
-| Claude Code Agent Team | 自動ではありません。Codex サブ agent には委譲または並列 agent の明示的なユーザー要求が必要です |
+| Claude Code Agent Team | ネイティブ Codex subagent は作業に応じて適応的に使います。別の固定 topology は opt-in です |
 | アップストリームドキュメントのクロスモデル provider ディスパッチ | デフォルトでは無効。provider 設定とユーザー同意が明示された場合のみ使用できます |
 
 ### オプション: 外部クロスモデルレビュアー API
@@ -279,8 +296,10 @@ ARS は元々 Claude Code 向けに作成されました。この Codex パッ�
 
 ```bash
 export OPENAI_API_KEY="<your-openai-api-key>"
-export ARS_CROSS_MODEL="gpt-5.5"
+export ARS_CROSS_MODEL="gpt-6-astra"
 ```
+
+`gpt-6-astra` は両方の検証 transport で provisional です。GPT session が GPT 検証者を使う場合は同じ family の別の実行であり、異なる family による検証ではありません。provider・送信内容・費用への同意は引き続き必要です。
 
 その後、プロンプトでクロスモデル検証を明示的に要求してください。provider が設定されていない場合、または送信内容の種類に対する明示的な同意がない場合、ARS-Codex はシングルランタイムレビューにフォールバックし、クロスモデル検証が利用不可であったことを報告します。
 

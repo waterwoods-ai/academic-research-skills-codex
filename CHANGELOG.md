@@ -4,6 +4,193 @@ All notable changes to the Codex package are documented here.
 
 ## Unreleased
 
+## [3.22.2] - 2026-09-28
+
+### What's Changed
+- Synced the tagged ARS v3.22.2 release at
+  `7de1c9dfb7af9c02a9b57750761323f35a743aa2`, including v3.22.1 repairs,
+  while preserving Codex runtime/path overlays and the separately pinned
+  experiment-agent v1.1.0.
+- Added the local run-ledger schema, CLI, and pipeline instructions for exact
+  user wording, step receipts, file hashes, and rendered English/Traditional
+  Chinese handoff checks after compaction, resume, and subagent returns.
+  Receipt input hashes are computed on append and rechecked on report; ledger
+  contents do not create user authorization, and its hash chain detects
+  accidental damage rather than deliberate edits, rollback, or a lost tail.
+- Added the deterministic, local acronym checker for saved manuscripts and
+  abstracts. Coverage limits remain explicit; review reports are advisory
+  attachments excluded from decisions, revision roadmaps, and re-review criteria.
+- Adopted the broader instruction/data boundary across intake, dispatches,
+  passport imports, and tool reads. The changed opt-in claim-audit judge prompt
+  partitions cache entries from older prompt versions.
+- Carried forward routing fixes that keep explicit requests in their selected
+  mode when inputs are missing, retain literature review within its chosen
+  workflow, and distinguish peer review from committee correspondence.
+- Adopted Chinese APA 7 citation-check repairs: preserve abbreviation
+  exceptions and reference-list authors, require evidence of stroke-order
+  inversion, and separate visible syntax errors from unverified source claims.
+- Updated four-language release guidance and the materialized Desktop bundle.
+  Upstream Claude model audits, routing smoke results, and plugin evaluation
+  fixtures remain reference evidence; they do not establish Codex model
+  effectiveness. Claude plugin hooks remain inactive, and prompt adherence is
+  unmeasured.
+
+## [3.22.0] - 2026-09-16
+
+### What's Changed
+- Aligned the ARS-Codex release number with ARS, replacing the independent
+  `0.1.x` numbering from this release onward. Historical entries keep their
+  original versions; package and upstream suite versions are checked together.
+- Synced the tagged ARS v3.22.0 release at
+  `3c546bc08c56f79e0068f1ea4f0acedf5bf69b5e`, preserving Codex path overlays,
+  runtime policy, and the separately pinned experiment-agent v1.1.0.
+- Added the Phase-1 `output_language_pair` contract and abstract consumer chain.
+  Only `zh-tw-en` is registered; omitted values retain legacy output, while
+  malformed or unsupported values fail visibly. Spanish output packs remain
+  outside this release's supported registry.
+- Propagated Spanish intent triggers into the single Codex router and planner,
+  including separate manuscript-revision and reviewer-simulation routes.
+- Adopted the upstream Windows file-lock helper and canonical API-effort,
+  contained citation-transport, audit-provenance, and writing-diagnostic fixes.
+  Unknown judge identities now isolate cache entries by audit run, retaining
+  deduplication within that run without cross-run reuse.
+- Vendored reviewer-calibration infrastructure, Claude plugin eval source
+  suites, Spanish README, and frozen locale changelog archives. These sources
+  do not establish measured Codex effectiveness or launch live evaluations.
+- Updated four-language release guidance and the materialized Desktop bundle.
+
+## [0.1.29] - 2026-09-06
+
+### What's Changed
+- Synced ARS v3.21.2 at `8fa3d651ad45da9e02762a6ba1fa3d1f231f91b6`,
+  preserving Codex path overlays and the separately pinned experiment-agent.
+- Read the complete Astra (117 pages) and Fable/Mythos 5.1 (212 pages) system
+  cards; recorded source hashes, section coverage and implementation decisions
+  in `codex/audits/2026-09-06-model-alignment.md`.
+- Added project-scoped GPT-6 Astra/xhigh configuration and an explicit planner
+  model policy: routine medium, complex judgement xhigh, supported overrides,
+  launch arguments, and separate requested/caller-observed provenance.
+- Replaced manual-only native delegation with adaptive bounded collaboration;
+  retained opt-in fixed topologies/hooks, blinded review, author authority and
+  integrity gates. Removed stale self-scoring, fixed question counts and generic
+  punctuation/paragraph quotas; unsupported facts cannot be repaired by hedging.
+- Corrected upstream Astra API payloads and effort preflight, rejected
+  delegation-requesting ultra in the citation-only transport, and updated the
+  independent audit launcher to Astra. General Codex research still supports
+  explicit max/ultra; API and contained transport vocabularies remain distinct.
+- Removed the implicit old-model identity from claim-audit cache provenance;
+  unknown model identity bypasses cache instead of mislabelling execution.
+- Fixed natural-language review and format-conversion routing, restored all
+  five reviewer seats in output validation, and clarified that the planner's
+  package gate catalog is not a requirement to execute every gate per request.
+- Opened upstream issues #823–#826 for the confirmed API, transport, writing
+  harness and executable/cache findings.
+- Updated four-language setup guidance and materialized Desktop plugin bundle.
+  Historical model measurements remain unchanged; Astra verifier promotion
+  remains provisional pending a real transport-specific bakeoff.
+
+## [0.1.28] - 2026-09-02
+
+### What's Changed
+- Synced the vendored ARS suite through post-`v3.21.1` upstream `main` commit
+  `94436237913091d4739870159d241660527e8338`; upstream suite metadata remains
+  at `3.21.1`, and component metadata remains unchanged.
+- Added Chinese-aware title matching across the four bibliographic index
+  resolvers and restricted CJK outer-wrapper stripping to one balanced unit.
+- Declared the `markdown-it-py` development dependency used by surface-form
+  checks, made a missing PyYAML dependency fail visibly, and expanded the
+  associated hermetic regression coverage.
+- Vendored the new upstream skill-inventory parity lint and mutation tests.
+  Its Claude-distribution real-tree gate remains inactive because ARS-Codex
+  intentionally uses one router, `WORKFLOW.md` entries, and no Claude loader
+  manifests or skill symlinks; the Codex-native gate now requires exact core
+  workflow parity among disk, the root router, and the full-runtime manifest.
+- Hardened source ownership validation so a secondary repository cannot claim
+  a core workflow path and silently exempt it from version checks.
+- Added the September harness-retirement audit and synchronized the R10 risk
+  register, MLA citation-key wording, setup guidance, and upstream test
+  manifest.
+- Preserved the single-root Codex router, existing path-sensitive validator
+  overlays, materialized Desktop plugin mirror, and separately pinned
+  experiment-agent v1.1.0 tree.
+
+## [0.1.27] - 2026-08-24
+
+### What's Changed
+- Synced the vendored ARS suite to the signed `v3.21.1` release at
+  `127ff85e4bbfcdd10b95040537b6c6bd7ad17aeb`.
+- Added the default-off deterministic research-workflow profile substrate and
+  opt-in `ARS_INQUIRY_LEDGER=1` branch-ledger alpha, preserving explicit
+  selection, visible field-general fallback, append-only correction, bounded
+  summaries, and non-destructive stale-state semantics.
+- Vendored sealed preregistration contracts and hermetic tests for future model
+  promotion bakeoffs, plus the retained GPT-5.6 Sol Codex-transport bakeoff
+  evidence. The history-dependent tree verifier remains an upstream
+  release-discipline tool because the vendored subtree has no upstream Git
+  history.
+- Adopted the Codex CLI 0.147.0 citation-transport repairs: authentication
+  attestation may arrive on stdout or stderr, the provider schema omits
+  unsupported `uniqueItems` while local duplicate rejection stays fail-closed,
+  and the bounded search host remains available without widening the accepted
+  event grammar.
+- Added the source-backed review-criteria proving set, exact-profile source
+  receipts, shared Markdown grammar, workflow-profile and inquiry-ledger
+  runtimes, contracts, and hermetic tests.
+- Preserved the single-root Codex router, `WORKFLOW.md` entrypoint and content
+  lock overlays, inactive Claude-only validators, MiniMax compatibility layer,
+  materialized Desktop plugin mirror, and separately pinned experiment-agent
+  v1.1.0 tree.
+
+## [0.1.26] - 2026-08-18
+
+### What's Changed
+- Synced the vendored ARS suite through the signed `v3.21.0` release at
+  `2b639c12ee4e7c694a32336cc59dc2616e0d89fe`, rolling the unreleased
+  v3.20.1 alignment into the same Codex package version.
+- Added the default Socratic non-generation exit: non-convergence alone no
+  longer authorizes system-authored research-question candidates.
+- Adopted categorical, criterion-bound reviewer judgements, `NOT_CALIBRATED`
+  live packages, and six-axis panel provenance while retiring numeric reviewer
+  scores, weights, aggregates, and score trajectories.
+- Added exact-span/raw-byte claim-registry coverage, claim-strength disposition
+  sidecars, required scope for new human-read attestations, and a closed
+  deterministic attestation resolver.
+- Vendored the bounded claim-standing stance and blind ideation-assignment
+  evaluation infrastructure with its consent, provenance, no-call, and
+  unmeasured boundaries.
+- Added the v3.21 claim-standing query-plan, affirmative-consent, freshness,
+  transmission-ledger, and pipeline-wiring contracts. Eligibility remains an
+  offer signal and never dispatches an external call.
+- Vendored the canonical data-flow map, control-availability matrix,
+  stage-capability matrix, risk register, governance statement, and their
+  deterministic transparency checks.
+- Documented the Codex bibliographic routing boundary: ordinary discovery and
+  inline ingest use browsing; `ars-full` alone does not launch the four Python
+  resolver clients; programmatic citation verification and claim-standing
+  discovery retain separate explicit triggers.
+- Preserved the single-root Codex router, `WORKFLOW.md` path adaptations,
+  inactive Claude-only calibration and distribution-surface gates,
+  materialized Desktop plugin mirror, and the separately pinned
+  experiment-agent v1.1.0 tree.
+
+## [0.1.25] - 2026-08-14
+
+### What's Changed
+- Synced the vendored ARS suite to the `v3.20.0` release at
+  `3af9f03d5aadb0bca51af1440f20b5cbf97d6dba`.
+- Added evidence-bound review and revision contracts, including durable
+  evidence rows, author-confirmed review criteria, non-ranking revision
+  roadmaps, author adjudication, and revision-evidence bundles.
+- Added the contained, consent-gated Codex citation transport for narrow
+  citation-integrity checks, plus stronger human-subjects authority boundaries.
+- Vendored the optional sandboxed PDF content classifier as an advisory tool;
+  it is not a required dependency and does not change structural PDF preflight.
+- Adapted the v3.20 indirect-injection no-call envelope to verify its upstream
+  suite commit through the package source lock when the nested vendor tree has
+  no `.git` directory.
+- Preserved the single-root Codex router, `WORKFLOW.md` entrypoint mapping,
+  inactive Claude-only hooks, and separately vendored experiment-agent v1.1.0.
+
 ## [0.1.24] - 2026-08-06
 
 ### What's Changed

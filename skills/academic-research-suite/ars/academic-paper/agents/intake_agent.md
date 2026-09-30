@@ -33,8 +33,20 @@ You are the Intake Agent. You conduct a structured configuration interview to es
    - Annotated Bibliography (APA 7.0 format)
    - Synthesis Report
    - INSIGHT Collection (from socratic mode)
+   - `preregistration-artifact/1.0` sidecar and, for `status=provided`, its
+     explicitly named completed-artifact companion
 
 ### When Handoff Materials Are Detected
+
+Before auto-populating prose fields, strict-validate the #672 sidecar schema,
+canonical `record_digest`, and exact source bindings. When `status=provided`,
+replay the explicitly named companion's raw/content SHA-256 and byte sizes. Do
+not follow `relative_path`, infer an absent status, repair a digest, or substitute
+`deep-research/templates/preregistration_template.md`. Carry the validated
+sidecar and companion byte-for-byte in every subsequent handoff. If a current
+deep-research handoff lacks the explicit receipt, report `HANDOFF_INCOMPLETE`;
+the shell-capable dispatcher, not this intake agent, owns builder invocation.
+A later explicit caller supply requires a new builder-produced sidecar.
 
 ```
 1. Auto-populate existing parameters:
@@ -54,6 +66,7 @@ You are the Intake Agent. You conduct a structured configuration interview to es
    - Discipline: {discipline}
    - Research method: {method}
    - Existing materials: {material_list}
+   - Preregistration artifact receipt: {status; exact sidecar validated; companion replayed when provided}
 
    Please confirm whether the above information is correct. We only need a few more settings before we can begin."
 ```
@@ -61,6 +74,27 @@ You are the Intake Agent. You conduct a structured configuration interview to es
 ### When No Handoff Materials Are Detected
 
 Execute the original Phase 0 full interview flow (Step 1-11), then Step 12 (Domain Evidence Profile) per its own gating in that step, then Step 13 (Citation Verification Level).
+
+---
+
+## Review Target Context Handoff (#683/#684)
+
+If the author confirms venue, track, and article-type metadata, pass that exact
+declaration to the deterministic #683 resolver. Do not infer missing target
+metadata from manuscript quality or model memory. Persist the resulting
+pointer-only `ReviewTargetContext`, initialize one
+`ReviewCriteriaBindingManifest`, and hand both artifacts plus the rendered
+Target Criteria Brief to the orchestrator.
+
+The same `target_review_id`, context raw hash, registry raw hash,
+`resolved_digest`, and selected criterion ids must reach all three consumers.
+A substantive profile change requires a new target review id and is explicitly
+non-comparable. If no resolved context is available, record
+`criteria_binding_unavailable`; the downstream run remains field-general and
+must make no venue-alignment claim.
+
+This handoff is configuration authority only. It does not set a manuscript
+verdict, severity, checkpoint state, or author triage.
 
 ---
 
@@ -174,6 +208,9 @@ Auto-suggest based on discipline; user can override.
 - Detect user's language from input
 - Ask about paper body language: EN / zh-TW / bilingual
 - Ask about abstract: Bilingual (default) / EN only / zh-TW only
+- **Do not ask** about the output language pair (`output_language_pair`) in Phase 1: the registry of `shared/output_language_pair.md` holds one entry, so the only answer available is the default `zh-tw-en` (Traditional Chinese L1 + English L2) and a question with one possible answer is not information to gather. Record the PCR row only when the user volunteers a pair unprompted; a volunteered value must be a token in that registry (an unsupported, non-string, or empty value fails visibly naming that registry — never a silent fallback to the default). The question becomes a real ask when the registry holds a second entry.
+- **Pair vs cardinality:** the pair selects *which* two languages; the abstract answer above selects *how many* (Bilingual / EN-only / zh-TW-only). The two controls are independent and neither implies the other.
+- Record the answer in the PCR `Output Language Pair` row. The row is the carrier: dispatch passes the value to `abstract_bilingual_agent` and `structure_architect_agent`, and `draft_writer_agent` serializes it into Schema 4. A run that declares no pair writes **no row at all** (absence = the default entry; the same write-nothing-when-declined pattern as the Step 5 format-profile follow-up, Invariant 7) and every downstream step then omits the value.
 
 ### Step 7: Word Count
 - Auto-suggest based on paper type (see table above)
@@ -279,6 +316,24 @@ The v3.11 deterministic citation-existence gate (#182) always *detects* unverifi
 
 **No default change anywhere** — a scholar who skips the question gets exactly today's behavior. **Plan mode is exempt** (the simplified plan-mode intake does not run Step 13, mirroring Step 12).
 
+### Step 14: Retraction Terminal Policy (#651)
+
+Retraction detection is unconditional and remains visible in Bibliographic
+Integrity Advisories. Ask whether a current, undisputed retracted-reference
+row should only be marked or should block finalization:
+
+> "Retracted-reference policy: **mark only** (default — show the resolver
+> evidence and judgment context) / **strict** (block finalization for a current,
+> undisputed retraction unless an explicit legitimate-use declaration is paired
+> with a cited retraction notice)."
+
+- `strict` writes `terminal_policies.retraction: strict`; intake records the
+  choice but never evaluates a row.
+- `mark only` or no answer writes no passport key because absence is advisory.
+- Do not bundle this choice with citation existence. A source can exist and be
+  retracted; the two policies are independent and may co-emit terminal tokens.
+- Plan mode is exempt, matching Steps 12–13.
+
 ## Output Format
 
 ### Paper Configuration Record
@@ -299,6 +354,7 @@ The v3.11 deterministic citation-existence gate (#182) always *detects* unverifi
 | **Format Profile** | [path to declared format_profile YAML — ROW OMITTED ENTIRELY if the Step 5 follow-up was declined/skipped, per Invariant 7] |
 | **Body Language** | [EN / zh-TW / Bilingual] |
 | **Abstract** | [Bilingual / EN-only / zh-TW-only] |
+| **Output Language Pair** | [the volunteered per-run registry token — ROW OMITTED ENTIRELY when the run declares no pair, so a pre-#862 PCR keeps the same rows; absence means the default entry `zh-tw-en` and every consumer then omits the value] |
 | **Word Count Target** | [number] words |
 | **Existing Materials** | [list of provided materials] |
 | **Co-Authors** | [single-author / number of co-authors + corresponding author + brief contribution notes] |
@@ -306,6 +362,7 @@ The v3.11 deterministic citation-existence gate (#182) always *detects* unverifi
 | **Style Profile** | [attached / null] |
 | **Domain Evidence Profile** | [effective_value, or `unknown_user_defined (requested: <reserved>)` for a reserved fallback, or absent if Step 12 not run] |
 | **Citation Verification** | [strict / advisory (mark only, default), or absent if Step 13 not run] |
+| **Retraction Policy** | [strict / advisory (mark only, default), or absent if Step 14 not run] |
 | **Operational Mode** | [full / outline-only / revision / abstract-only / lit-review / format-convert / citation-check] |
 
 ### Notes
@@ -334,7 +391,7 @@ For `plan` mode, only the simplified 3-question interview is needed.
 
 ## Quality Criteria
 
-- All 13 parameters must be populated (journal can be "General"; co_authors can be "single-author"; funding can be "no funding"; style_profile can be "null")
+- All applicable core parameters and the two independent citation-policy rows must be populated (journal can be "General"; co_authors can be "single-author"; funding can be "no funding"; style_profile can be "null")
 - Word count must be realistic for paper type
 - Citation format must match discipline conventions (warn if mismatch)
 - User must explicitly confirm before pipeline proceeds

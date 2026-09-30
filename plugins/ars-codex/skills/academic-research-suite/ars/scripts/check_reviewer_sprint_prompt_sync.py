@@ -113,9 +113,11 @@ SLOT_RE = re.compile(r"\{\{([A-Z_]+)\}\}")
 DOUBLE_BRACE_RE = re.compile(r"\{\{|\}\}")
 
 # Re-pin only after reviewing an intentional canonical protocol edit and its
-# corresponding inline mirrors. This is the second v3.17-style content lock;
-# exact canonical→mirror equality is the first.
-CANONICAL_CONTENT_SHA256 = "27ba132fe46bfe3fdfe5bda20de52bbef9c6605d7ecfce1261cc8a127fab9427"
+# corresponding inline mirrors. The current pin includes the explicit
+# confidence-as-uncertainty-only boundary in the DA Phase 2 fragment. This is
+# the second v3.17-style content lock; exact canonical→mirror equality is the
+# first.
+CANONICAL_CONTENT_SHA256 = "231ba4bebb7fb031dc59b82bebd025d577a292258fbc5f570c2624746779e608"
 
 
 def _parse_fragments(text: str, errors: list[str]) -> dict[str, str]:

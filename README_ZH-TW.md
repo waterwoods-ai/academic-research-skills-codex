@@ -1,13 +1,13 @@
 # ARS-Codex
 
-[![Version](https://img.shields.io/badge/version-v0.1.24-blue)](VERSION)
+[![Version](https://img.shields.io/badge/version-v3.22.2-blue)](VERSION)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC%20BY--NC%204.0-lightgrey)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Sponsor](https://img.shields.io/badge/sponsor-Buy%20Me%20a%20Coffee-orange?logo=buy-me-a-coffee)](https://buymeacoffee.com/crucify020v)
 
 ARS-Codex 是
 [Academic Research Skills（ARS）Claude Code 版](https://github.com/Imbad0202/academic-research-skills)
 的 Codex 原生 sibling。它是獨立的 Codex 發行版本，擁有自己的 plugin 識別碼、
-封裝、版本與 runtime adapter。
+封裝與 runtime adapter；發行版號自 `3.22.0` 起與內嵌 ARS 同步。
 
 本倉庫將 ARS workflow 內容作為單一 Codex skill 提供：
 
@@ -29,7 +29,7 @@ skills/academic-research-suite/
     shared/
 ```
 
-原始 Claude Code ARS 的 checkout 不會被修改。上游內容從全新的 GitHub clone 複製，
+原始 Claude Code ARS 的 checkout 不會被修改。上游內容從已核對的上游發行 commit 複製，
 並透過 `skills/academic-research-suite/SKILL.md` 中的 Codex router 進行適配。
 
 ## 與 Claude Code ARS 的關係
@@ -43,24 +43,34 @@ skills/academic-research-suite/
 
 ## 版本控制
 
-此 ARS-Codex 套件版本為 `0.1.24`。倉庫根目錄的 `VERSION` 檔案、
+此 ARS-Codex 套件版本為 `3.22.2`。倉庫根目錄的 `VERSION` 檔案、
 `skills/academic-research-suite/SKILL.md` 的 metadata 版本，
 以及 `skills/academic-research-suite/manifest.json` 的 `adapter_version`
-獨立追蹤 Codex 套件版本，與內嵌的 ARS 套件版本分開管理。
-內嵌的上游版本透過 commit 記錄在 `manifest.source_repositories[]` 中。
+自 `3.22.0` 起與內嵌 ARS 套件使用相同版號；舊有 `0.1.x` 紀錄保留原版號。
+上游版本、tag 與完整 commit 記錄在 `manifest.source_repositories[]` 中。
 
 套件層級的變更摘要記錄在 [`CHANGELOG.md`](CHANGELOG.md) 中。
 
-目前內嵌的 ARS 原始碼追蹤至
-`Imbad0202/academic-research-skills@5769d7b51adfba45593ad95721436fd114aaa735`
-（`v3.19.0` 之後的上游 `main`，2026-08-06；套件版本仍為 3.19.0）。內嵌內容新增
-reviewer 硬化系列（角色範圍評分契約與棄權機制、具型別的證據錨點與覆蓋
-receipt、Stage 3' 三閘門 re-review 預承諾契約、算術 receipt 文法與其
-deterministic 計算器、空異議規則）、新的 reviewer held-out 評測集與裁定
-cohort、醫學期刊揭露政策與 fail-closed 渲染、中文文獻 resolver client，以及
-CARE／STARD 2015／TRIPOD+AI 精要指引。v3.19 的 PDF preflight、閱讀範圍聲明、
-claim-drift 防護，v3.18 的 cross-model reviewer／judge、快取重驗、風險分層
-檢核與既有最小權限契約仍完整保留。
+目前內嵌的 ARS 原始碼對齊 **v3.22.2**：
+`Imbad0202/academic-research-skills@7de1c9dfb7af9c02a9b57750761323f35a743aa2`。
+此版本納入 v3.22.1 與 v3.22.2 修正：本機 run ledger 與交接檢查、
+確定性的縮寫檢查、擴大指令與資料邊界、明確意圖路由，以及以證據為準的中文 APA 7 引用檢查。
+新工具以合成測試驗證確定性行為；prompt 是否被遵循及 Codex 模型成效尚未實測。
+語言配對目前僅支援 `zh-tw-en`；西班牙文觸發詞不代表已提供西班牙文輸出語系包。
+Claude 模型稽核與插件評估素材保留供參考，不會改變 Codex 模型策略，也不代表已實測 Codex 效能。
+
+## 模型與執行方式
+
+本 checkout 的 [project 設定](.codex/config.toml) 為新開且信任此專案的
+Codex session 選用 `gpt-6-astra` 與 `xhigh` reasoning。安裝 skill 不會複製
+此設定，也無法切換已執行中的 session。Planner 對例行任務建議 `medium`、
+複雜任務建議 `xhigh`；這是起始策略，尚非實測最佳設定。`ultra` 僅供 Codex
+中明確選用的高難度工作使用，contained citation transport 會拒絕此設定。
+
+預設採原生自適應執行：適合平行處理的獨立工作可交給範圍明確的子 agent，
+主 agent 同時繼續其他工作。固定 full-runtime topology 與 hooks 仍須選用。
+詳見[模型執行策略](skills/academic-research-suite/codex/model-runtime-policy.md)
+與[系統卡對齊稽核](skills/academic-research-suite/codex/audits/2026-09-06-model-alignment.md)。
 
 ## 安裝 ARS-Codex Plugin
 
@@ -278,7 +288,7 @@ ARS 最初是為 Claude Code 撰寫的。在此 Codex 套件中：
   註冊為斜線指令。
 - 內嵌的 `hooks/hooks.json` 檔案僅為上游可追溯性而保留。
   Codex 不會從本套件安裝 Claude Code hooks。
-- 除非您明確要求委派或平行 agent 工作，否則 Codex 不會自動生成背景 agent。
+- Codex 可在目前任務與權限範圍內，透過原生子 agent 委派獨立工作；主 agent 同時繼續其他有用工作。
 - 網頁/來源驗證使用 Codex 瀏覽功能，在涉及即時或外部事實時必須引用來源。
 - 跨模型驗證預設為停用。在此 Codex 套件中明確要求時，
   請依 `ars/shared/cross_model_verification.md` 設定 provider，先說明
@@ -289,31 +299,52 @@ ARS 最初是為 Claude Code 撰寫的。在此 Codex 套件中：
 - 如果引用、來源、統計數據或期刊政策無法驗證，Codex 應將其標記為未驗證，
   而非虛構支持內容。
 
-### ARS v3.19+ 功能對等
+### ARS v3.22.2 功能對等
 
-本套件旨在與上游 ARS `main`（`5769d7b`，`v3.19.0` 之後；套件版本 3.19.0）
-在 Codex 具有對等概念之處，提供相同的使用者面向 workflow 內容。
+本套件在 Codex 具有對等概念之處，適配上游 ARS `v3.22.2`
+（`7de1c9dfb7af9c02a9b57750761323f35a743aa2`），並記錄模型與 runtime overlay。
+
+Codex adapter 對書目網路行為採以下明確邊界：
+
+| 研究路徑 | Codex 預設行為 | 專用 API／client 觸發條件 |
+|---|---|---|
+| 一般主題或候選文獻探索 | 使用 Codex browsing 與權威網頁來源 | 不啟動四個 Python resolver clients |
+| Prompt 層級 ingest、去重或來源驗證 | 使用 Codex browsing 或官方 metadata 頁面 | 內嵌 prompt 的「automatic lookup」文字不會啟動 Python client |
+| Script-backed citation-existence gate | `ars-full` 本身不等於授權；Stage 2.5／4.5 仍以預設 Codex 路徑完成 integrity checkpoint | 使用者明確要求 programmatic verification；之後非 manual reference 會依 cache 行為查 Crossref／OpenAlex／Semantic Scholar，arXiv 僅在有 `arxiv_id` 時執行 |
+| Claim-standing discovery | Stage 2.5／4.5 出現 eligible Claim Registry row 後才可提供 advisory | 另行由使用者要求並完成 plan-bound affirmative consent；使用 v3.21 discovery adapters，而非單篇 resolver clients |
+| Contamination backfill／migration | 不自動執行 | 僅限明確選定的 migration CLI |
 
 | 上游 ARS 功能 | Codex 套件行為 |
 |---|---|
 | 單一可安裝 plugin | 原生 Codex plugin `ars-codex`，內含單一 `academic-research-suite` skill |
 | `/ars-*` 斜線指令 | 透過 skill router 作為 `ars-*` 別名模擬；非原生斜線指令 |
 | 四個上游 skill 從 `skills/` 符號連結自動發現 | 單一 Codex router skill 選擇 workflow 並讀取內嵌的 workflow `WORKFLOW.md` 檔案 |
-| Plugin 隨附的 agent | Agent 檔案作為角色/階段提示詞；Codex 以內嵌方式執行，除非使用者明確要求委派子 agent |
-| `model: opus` / `model: sonnet` 指令路由 | 視為 Claude metadata；Codex 使用當前活躍的模型 |
+| Plugin 隨附的 agent | 角色/階段提示詞依任務依賴與 runtime 權限，以內嵌或範圍明確的原生子 agent 執行 |
+| 重型指令（`ars-full`、`ars-reviewer`、`ars-revision-coach`）省略 `model:`，輕量模式保留 `model: sonnet` | 重型指令繼承目前 Codex session 模型；輕量模式的 `sonnet` 作為上游 Claude metadata 保留，不會覆寫 session 模型 |
 | `ARS_MODEL_TIERING=economy\|quality-boost` | 保留 judgment/execution 分類；僅在 Codex 支援逐次 dispatch 指定模型時套用，否則維持當前模型 |
 | 受保護 agent 的 `tools:` allowlist | 保留為最小權限角色邊界；被委派的 owner 不取得 Bash 或網路 transport |
 | Canonical cross-model handoff envelope | Dispatcher 驗證 envelope、取得同意後只傳送 payload，並依封閉的結果路由 contract 執行 |
+| Run ledger 與交接檢查 | 有 passport 檔案時，pipeline prompt 指示呼叫端在本機記錄使用者原話、步驟回條與檔案雜湊；確定性報告檢查壓縮、續跑及子 agent 回傳後的交接，不構成新的授權 |
+| 確定性縮寫檢查 | 呼叫端在本機檢查已儲存的草稿與摘要，明示不完整覆蓋；審查附件僅供參考，不作為決定、修訂路線圖或再審標準的依據 |
+| 指令與資料邊界及路由 | Workflow intake、dispatch 與工具讀取的第三方文字均視為資料；明確請求即使缺少輸入仍留在所選模式，Claude 啟動 hooks 維持不啟用 |
+| 中文 APA 7 引用檢查 | 保留作者縮寫例外與參考文獻作者欄，須有筆畫排序顛倒的證據才建議重排，並區分可見語法錯誤與未驗證的來源主張 |
+| 用途受限的 Codex citation transport | 僅在明確設定、要求並取得同意後，用於窄範圍 citation-integrity 檢查 |
+| 證據綁定的 review／revision | 保留持久 evidence row、已確認 criteria、非排序 roadmap、author adjudication 與 revision-evidence bundle |
+| Socratic 研究問題作者權 | 未收斂不會觸發系統代擬候選研究問題；必須由使用者明確要求才能離開 non-generation 模式 |
+| 類別式審稿判斷與 panel provenance | Live package 維持 `NOT_CALIBRATED`；不虛構數值分數、權重、總分、排名或二元 independence 宣稱 |
+| Review criteria 與 human-subjects authority | Venue／criteria 與 ethics／data-protection authority 必須由使用者確認；Codex 不推論或模擬核准 |
+| 選用 PDF 內容分類器 | sandbox classifier 是 opt-in advisory，不能覆蓋結構性 PDF preflight 結果 |
 | Cross-model Reviewer 2 與 re-review judge | 僅在 provider 已設定且取得內容傳輸同意時啟用；保留固定席次、Judge Record、單一模型家族與 fallback 揭露 |
 | 快取過期 advisory 與即時重驗 | 預設使用本地快取；過期列僅為 advisory，`ARS_CACHE_REVALIDATE=1` 才啟用即時書目重驗 |
 | 風險分層主張、範圍與新穎性檢查 | 保留高影響主張優先抽樣，以及不阻擋 gate 的 scope 與 search-bounded novelty advisory |
-| 本機 PDF 讀取完整性 preflight | 內嵌 pypdf preflight 與 sidecar contract；parser 無法使用或修復警告會明確保留為 `UNAVAILABLE` advisory |
-| 人工閱讀範圍聲明 | 保留使用者擁有的可選 `read_scope` 與章節 locator；部分覆蓋不會被視為全文閱讀 |
-| 修訂主張漂移防護 | 內嵌主張強度階梯、revision-evidence bundle、deterministic token-conservation checker 與 held-out 測量集及測試 |
+| 本機 PDF 讀取完整性 preflight | 結構性 pypdf preflight 與 sidecar contract 維持預設；parser 無法使用或修復警告會明確保留為 `UNAVAILABLE` advisory，上述 v3.20 classifier 仍僅為 opt-in |
+| 人工閱讀範圍聲明 | 每個新標記都必須提供使用者擁有的 `read_scope`；舊紀錄缺少 scope 時仍為 unknown，部分覆蓋不會被視為全文閱讀 |
+| Claim coverage 與有界評估基礎設施 | 精確的 registered-claim coverage、drift disposition、claim-standing 工具與盲化 ideation assignment 保留 provenance 與未測量邊界，不證明語意完整性或正確性 |
+| 修訂主張漂移防護 | v3.20 非排序 roadmap 與 author-adjudication contract，搭配主張強度階梯、revision-evidence bundle、deterministic token-conservation checker 及 held-out 測量集 |
 | Panel／degradation／pipeline-boundary 可執行檢查 | 與 hermetic 測試一併內嵌，並由選用的 full-runtime manifest 公開 |
 | SessionStart 和 SubagentStop hooks（含更新提醒） | 僅為可追溯性而保留；Codex 不安裝或執行 Claude hooks |
 | Plugin marketplace 更新 | 執行 `codex plugin marketplace upgrade ars-codex` 後重新加入 `ars-codex@ars-codex`；直接安裝的 skill 仍以重新安裝或 pull 更新 |
-| Claude Code Agent Team | 非自動；Codex 子 agent 需要使用者明確要求委派或平行 agent |
+| Claude Code Agent Team | 原生 Codex 子 agent 依工作自適應安排；另設的固定 topology 仍須選用 |
 | 上游文件中的跨模型 provider 分派 | 預設停用；只有在明確設定 provider 並取得使用者同意時才可使用 |
 
 ### 選用的外部跨模型審查者 API
@@ -323,8 +354,12 @@ ARS 最初是為 Claude Code 撰寫的。在此 Codex 套件中：
 
 ```bash
 export OPENAI_API_KEY="<your-openai-api-key>"
-export ARS_CROSS_MODEL="gpt-5.5"
+export ARS_CROSS_MODEL="gpt-6-astra"
 ```
+
+`gpt-6-astra` 在兩種驗證 transport 仍為 provisional。GPT session 使用 GPT
+驗證者屬同家族的另一個執行個體，不代表跨家族驗證；provider、內容與費用
+同意仍然適用。
 
 然後在提示中明確要求跨模型驗證。若未設定 provider 或未取得要送出內容類別的
 明確同意，ARS-Codex 將回退至單一執行時期審查，並應報告跨模型驗證不可用。

@@ -6,6 +6,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 
 CODEX_ROOT = Path(__file__).resolve().parents[1]
 SUITE_ROOT = CODEX_ROOT.parent
@@ -20,6 +22,98 @@ def _load_planner():
     assert spec and spec.loader
     spec.loader.exec_module(module)
     return module
+
+
+def _load_gates():
+    spec = importlib.util.spec_from_file_location("ars_codex_quality_gates", GATES_PATH)
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+    return module
+
+
+_CORE_WORKFLOWS = {
+    "deep-research",
+    "academic-paper",
+    "academic-paper-reviewer",
+    "academic-pipeline",
+}
+_EXTERNAL_WORKFLOWS = {"experiment-agent"}
+_REQUIRED_WORKFLOWS = _CORE_WORKFLOWS | _EXTERNAL_WORKFLOWS
+
+
+def _inventory_gate_fixture(
+    tmp_path: Path,
+    monkeypatch,
+    *,
+    disk_names: set[str] | None = None,
+    router_names: set[str] | None = None,
+    runtime_names: set[str] | None = None,
+    external_names: set[str] | None = None,
+    router_preamble: str = "",
+    router_trailer: str = "",
+):
+    gates = _load_gates()
+    suite_root = tmp_path / "academic-research-suite"
+    ars_root = suite_root / "ars"
+    codex_root = suite_root / "codex"
+    ars_root.mkdir(parents=True)
+    codex_root.mkdir()
+
+    disk_names = set(_REQUIRED_WORKFLOWS if disk_names is None else disk_names)
+    router_names = set(_REQUIRED_WORKFLOWS if router_names is None else router_names)
+    runtime_names = set(_REQUIRED_WORKFLOWS if runtime_names is None else runtime_names)
+    external_names = set(_EXTERNAL_WORKFLOWS if external_names is None else external_names)
+
+    for name in disk_names:
+        entry = ars_root / name / "WORKFLOW.md"
+        entry.parent.mkdir()
+        entry.write_text(f"# {name}\n", encoding="utf-8")
+
+    router_rows = "\n".join(
+        f"| {name} intent | `ars/{name}/WORKFLOW.md` |"
+        for name in sorted(router_names)
+    )
+    (suite_root / "SKILL.md").write_text(
+        "# Fixture router\n\n"
+        "## Workflow Router\n\n"
+        f"{router_preamble}"
+        "| User intent | Read first |\n"
+        "|---|---|\n"
+        f"{router_rows}\n\n"
+        f"{router_trailer}"
+        "## Next Section\n",
+        encoding="utf-8",
+    )
+    full_runtime_manifest = codex_root / "full-runtime-manifest.json"
+    full_runtime_manifest.write_text(
+        json.dumps({"workflows": {name: {} for name in sorted(runtime_names)}}),
+        encoding="utf-8",
+    )
+    package_manifest = suite_root / "manifest.json"
+    package_manifest.write_text(
+        json.dumps(
+            {
+                "source_repositories": [
+                    {
+                        "name": "academic-research-skills",
+                        "included_paths": sorted(_CORE_WORKFLOWS),
+                    },
+                    {
+                        "name": "external-fixture",
+                        "included_paths": sorted(external_names),
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(gates, "SUITE_ROOT", suite_root)
+    monkeypatch.setattr(gates, "ARS_ROOT", ars_root)
+    monkeypatch.setattr(gates, "FULL_RUNTIME_MANIFEST", full_runtime_manifest)
+    monkeypatch.setattr(gates, "PACKAGE_MANIFEST", package_manifest)
+    return gates
 
 
 def test_vague_paper_topic_routes_to_deep_research_socratic() -> None:
@@ -137,6 +231,19 @@ def test_model_tiering_is_surfaced_without_forcing_a_codex_model() -> None:
     assert delegated["profile"]["model_tiering_requested"] == "quality-boost"
 
 
+def test_command_model_hints_match_upstream_frontmatter_semantics() -> None:
+    manifest = json.loads((CODEX_ROOT / "full-runtime-manifest.json").read_text(encoding="utf-8"))
+    hints = {
+        command["aliases"][1]: command["model_hint"]
+        for command in manifest["commands"]
+    }
+
+    for alias in ("ars-full", "ars-reviewer", "ars-revision-coach"):
+        assert hints.pop(alias) == "inherit"
+    assert hints
+    assert set(hints.values()) == {"sonnet"}
+
+
 def test_cross_model_configuration_requires_dispatcher_consent_gate() -> None:
     planner = _load_planner()
     inline = planner.plan_request(
@@ -167,6 +274,112 @@ def test_cross_model_configuration_requires_dispatcher_consent_gate() -> None:
     assert reviewer_2["cross_model_reviewer_track"] == (
         "configured_requires_explicit_content_consent"
     )
+
+
+def test_cross_model_transport_selector_surfaces_closed_api_and_unset_states() -> None:
+    planner = _load_planner()
+
+    default = planner.plan_request("ars-plan Research question: Why?", env={})
+    assert default["profile"]["cross_model_transport_selector"] == "unset"
+    assert default["profile"]["cross_model_effective_transport"] == "api"
+    assert default["profile"]["cross_model_transport_scope"] == "none"
+
+    api = planner.plan_request(
+        "ars-reviewer full review for this manuscript.",
+        env={
+            "ARS_CROSS_MODEL": "gpt-5.5",
+            "ARS_CROSS_MODEL_TRANSPORT": "api",
+        },
+    )
+    assert api["profile"]["cross_model_transport_selector"] == "api"
+    assert api["profile"]["cross_model_effective_transport"] == "api"
+    assert api["profile"]["cross_model_transport_scope"] == "api_cross_model_workflows"
+    assert api["profile"]["cross_model_explicit_consent_required"] is True
+
+
+def test_codex_transport_is_citation_only_and_excluded_from_reviewer_plan() -> None:
+    planner = _load_planner()
+    plan = planner.plan_request(
+        "ars-reviewer full review for this manuscript.",
+        env={
+            "ARS_CODEX_FULL_RUNTIME": "1",
+            "ARS_CODEX_AGENT_TEAM": "1",
+            "ARS_CROSS_MODEL": "gpt-5.6-sol",
+            "ARS_CROSS_MODEL_TRANSPORT": "codex",
+        },
+    )
+    profile = plan["profile"]
+    assert profile["cross_model_transport_selector"] == "codex"
+    assert profile["cross_model_effective_transport"] == "codex"
+    assert profile["cross_model_transport_ready"] is True
+    assert profile["cross_model_transport_scope"] == "citation_integrity_only"
+    assert profile["cross_model_explicit_consent_required"] is True
+    assert profile["cross_model_handoff_status"] == (
+        "codex_citation_only_requires_explicit_request_and_consent"
+    )
+    assert set(profile["cross_model_forbidden_uses"]) == {
+        "devils_advocate",
+        "reviewer_seat",
+        "re_review_judge",
+        "general_judgment",
+    }
+
+    reviewer_2 = next(
+        item
+        for item in plan["agent_team_plan"]
+        if item["agent"] == "domain_reviewer_agent"
+    )
+    assert reviewer_2["cross_model_reviewer_track"] == (
+        "excluded_codex_transport_is_citation_only"
+    )
+    devil = next(
+        item
+        for item in plan["agent_team_plan"]
+        if item["agent"] == "devils_advocate_reviewer_agent"
+    )
+    assert "cross_model_reviewer_track" not in devil
+
+
+def test_codex_transport_without_ars_cross_model_is_visibly_unavailable() -> None:
+    planner = _load_planner()
+    plan = planner.plan_request(
+        "ars-citation-check verify this reference.",
+        env={"ARS_CROSS_MODEL_TRANSPORT": "codex"},
+    )
+    profile = plan["profile"]
+    assert profile["cross_model_effective_transport"] == "codex"
+    assert profile["cross_model_transport_ready"] is False
+    assert profile["cross_model_transport_scope"] == "none"
+    assert profile["cross_model_handoff_status"] == (
+        "codex_transport_unavailable_missing_ARS_CROSS_MODEL"
+    )
+
+
+def test_invalid_cross_model_transport_selector_fails_closed() -> None:
+    planner = _load_planner()
+    for invalid_selector in ("openai", "unset"):
+        with pytest.raises(
+            ValueError,
+            match="expected the variable to be absent, or set to api or codex",
+        ):
+            planner.plan_request(
+                "ars-reviewer full review for this manuscript.",
+                env={
+                    "ARS_CROSS_MODEL": "gpt-5.5",
+                    "ARS_CROSS_MODEL_TRANSPORT": invalid_selector,
+                },
+            )
+
+    result = subprocess.run(
+        [sys.executable, str(PLANNER_PATH), "ars-reviewer", "full", "review"],
+        env={"ARS_CROSS_MODEL_TRANSPORT": "openai"},
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode != 0
+    assert "refused to fall through" in result.stderr
+    assert not result.stdout
 
 
 def test_v318_cache_controls_are_surfaced_without_changing_gate_semantics() -> None:
@@ -301,6 +514,136 @@ def test_cli_outputs_json_plan() -> None:
     assert payload["mode"] == "full"
 
 
+def test_v320_manifest_registers_only_hermetic_runtime_contract_gates() -> None:
+    manifest = json.loads((CODEX_ROOT / "full-runtime-manifest.json").read_text(encoding="utf-8"))
+    options = manifest["runtime_options"]
+    transport = options["cross_model_transport"]
+    assert transport["allowed_values"] == ["api", "codex"]
+    assert transport["variable_may_be_absent"] is True
+    assert transport["normalized_absent_label"] == "unset"
+    assert transport["codex_scope"] == "citation_integrity_only"
+    assert transport["codex_requires_explicit_consent"] is True
+    assert transport["codex_requires_ars_cross_model"] is True
+    assert transport["codex_min_cli_version"] == "0.147.0"
+    assert transport["codex_login_attestation"] == "Logged in using ChatGPT"
+    assert set(transport["codex_forbidden_uses"]) >= {
+        "devils_advocate",
+        "reviewer_seat",
+        "re_review_judge",
+        "general_judgment",
+    }
+
+    pdf = options["pdf_content_classifier"]
+    assert pdf["mode"] == "optional_advisory"
+    assert pdf["auto_install"] is False
+    assert pdf["verdict_scope"] == "STRUCTURE_ONLY"
+    assert (SUITE_ROOT / pdf["dependency_file"]).is_file()
+
+    gates = {
+        gate["id"]: gate
+        for gate in manifest["quality_gates"]
+        if gate["id"].startswith("v320_")
+    }
+    required = {
+        "v320_codex_subscription_transport_contract",
+        "v320_codex_subscription_transport_runtime",
+        "v320_pdf_content_classifier_isolation",
+        "v320_phase_e_evidence_rows",
+        "v320_revision_roadmap_author_adjudication",
+        "v320_post_terminal_adjudication_activity",
+        "v320_human_subjects_authority",
+        "v320_review_pathway_rule_trace",
+        "v320_submission_packet_manifest",
+        "v320_human_subjects_reference_migration",
+        "v320_human_subjects_content_coverage",
+        "v320_bibliographic_integrity_signals",
+        "v320_retraction_status",
+        "v320_tortured_phrase_advisory",
+        "v320_preregistration_cross_document_advisory",
+        "v320_review_target_context",
+        "v320_review_criteria_binding",
+        "v320_committee_correspondence",
+    }
+    assert required == set(gates)
+    for gate in gates.values():
+        assert gate["execution"] == "hermetic"
+        runner = gate["runner"].removeprefix("upstream:")
+        assert (SUITE_ROOT / runner).is_file(), runner
+
+    all_runners = "\n".join(gate["runner"] for gate in manifest["quality_gates"])
+    assert "cross_model_smoke_test_codex.sh" not in all_runners
+    assert "run_review_criteria_constructive_value.py" not in all_runners
+
+
+def test_v3211_manifest_registers_bounded_hermetic_contracts() -> None:
+    manifest = json.loads(
+        (CODEX_ROOT / "full-runtime-manifest.json").read_text(encoding="utf-8")
+    )
+    options = manifest["runtime_options"]
+
+    transport = options["cross_model_transport"]
+    assert transport["codex_login_attestation_streams"] == ["stdout", "stderr"]
+    assert transport["codex_provider_schema_omits_unique_items"] is True
+    assert transport["codex_local_duplicate_source_refusal"] is True
+    assert transport["codex_code_mode_disabled"] is True
+    assert transport["codex_search_host_available"] is True
+
+    profile = options["research_workflow_profile"]
+    assert profile["mode"] == "default_off_deterministic_substrate"
+    assert profile["activation"] == "explicit_selection_or_direct_invocation"
+    assert profile["manuscript_inference"] is False
+    assert profile["pipeline_hook"] is False
+    assert profile["behavioral_evidence"] == "NOT_RUN"
+    assert (SUITE_ROOT / profile["fallback_profile"]).is_file()
+
+    ledger = options["inquiry_branch_ledger"]
+    assert ledger["environment"] == "ARS_INQUIRY_LEDGER"
+    assert ledger["enabled_value"] == "1"
+    assert ledger["default_enabled"] is False
+    assert ledger["execution"] == "local_offline"
+    assert ledger["publication_threshold"] == "second_branch"
+    assert ledger["external_call_authority"] is False
+    assert ledger["outcome_claims"] == "none"
+
+    gates = {
+        gate["id"]: gate
+        for gate in manifest["quality_gates"]
+        if gate["id"].startswith("v3211_")
+    }
+    required = {
+        "v3211_research_workflow_profile",
+        "v3211_inquiry_branch_ledger",
+        "v3211_data_access_level",
+        "v3211_review_criteria_source_proving_set",
+        "v3211_promotion_bakeoff_preregistration_contract",
+    }
+    assert required == set(gates)
+    for gate in gates.values():
+        assert gate["execution"] == "hermetic"
+
+    for gate in manifest["quality_gates"]:
+        runner = gate["runner"]
+        if runner.startswith("upstream:"):
+            assert (SUITE_ROOT / runner.removeprefix("upstream:")).is_file(), runner
+
+    active_runners = {gate["runner"] for gate in manifest["quality_gates"]}
+    assert (
+        "upstream:ars/scripts/check_promotion_bakeoff_preregistration.py"
+        not in active_runners
+    )
+    assert not any("cross_model_smoke_test_codex.sh" in runner for runner in active_runners)
+    assert not any("run_review_criteria_constructive_value.py" in runner for runner in active_runners)
+    assert not any("run_fleet.py" in runner for runner in active_runners)
+    assert not any("alternative_explanation_register" in runner for runner in active_runners)
+
+    package = json.loads((SUITE_ROOT / "manifest.json").read_text(encoding="utf-8"))
+    inactive_paths = {item["path"] for item in package["inactive_upstream_scripts"]}
+    assert (
+        "skills/academic-research-suite/ars/scripts/check_promotion_bakeoff_preregistration.py"
+        in inactive_paths
+    )
+
+
 def test_quality_gates_all_pass() -> None:
     result = subprocess.run(
         [sys.executable, str(GATES_PATH), "all", "--json"],
@@ -311,6 +654,183 @@ def test_quality_gates_all_pass() -> None:
     )
     payload = json.loads(result.stdout)
     assert all(item["ok"] for item in payload.values()), payload
+
+
+def test_single_root_inventory_matches_all_codex_surfaces(
+    tmp_path: Path, monkeypatch
+) -> None:
+    gates = _inventory_gate_fixture(tmp_path, monkeypatch)
+    messages = gates.check_single_root_skill()
+    assert any("4 core workflows match" in message for message in messages)
+    assert any("1 separately sourced workflow" in message for message in messages)
+
+
+@pytest.mark.parametrize(
+    ("mutated_surface", "error_pattern"),
+    [
+        ("disk", r"core workflow inventory mismatch for root_router"),
+        ("router", r"root router lists workflows without WORKFLOW\.md on disk"),
+        (
+            "runtime",
+            r"full-runtime manifest lists workflows without WORKFLOW\.md on disk",
+        ),
+    ],
+)
+def test_single_root_inventory_rejects_unpaired_workflow_mutations(
+    tmp_path: Path,
+    monkeypatch,
+    mutated_surface: str,
+    error_pattern: str,
+) -> None:
+    names = {
+        "disk": set(_REQUIRED_WORKFLOWS),
+        "router": set(_REQUIRED_WORKFLOWS),
+        "runtime": set(_REQUIRED_WORKFLOWS),
+    }
+    names[mutated_surface].add("unrouted-workflow")
+    gates = _inventory_gate_fixture(
+        tmp_path,
+        monkeypatch,
+        disk_names=names["disk"],
+        router_names=names["router"],
+        runtime_names=names["runtime"],
+    )
+    with pytest.raises(
+        gates.GateFailure,
+        match=error_pattern,
+    ):
+        gates.check_single_root_skill()
+
+
+def test_single_root_inventory_allows_separately_sourced_trace_workflow(
+    tmp_path: Path, monkeypatch
+) -> None:
+    gates = _inventory_gate_fixture(
+        tmp_path,
+        monkeypatch,
+        disk_names=_REQUIRED_WORKFLOWS | {"trace-addon"},
+        external_names=_EXTERNAL_WORKFLOWS | {"trace-addon"},
+    )
+    messages = gates.check_single_root_skill()
+    assert any("4 core workflows match" in message for message in messages)
+    assert any("2 separately sourced workflow" in message for message in messages)
+
+
+@pytest.mark.parametrize("mutated_surface", ["router", "runtime"])
+def test_single_root_inventory_rejects_dangling_external_routes(
+    tmp_path: Path, monkeypatch, mutated_surface: str
+) -> None:
+    names = {
+        "router": set(_REQUIRED_WORKFLOWS),
+        "runtime": set(_REQUIRED_WORKFLOWS),
+    }
+    names[mutated_surface].add("trace-addon")
+    gates = _inventory_gate_fixture(
+        tmp_path,
+        monkeypatch,
+        router_names=names["router"],
+        runtime_names=names["runtime"],
+        external_names=_EXTERNAL_WORKFLOWS | {"trace-addon"},
+    )
+    with pytest.raises(
+        gates.GateFailure,
+        match=r"lists workflows without WORKFLOW\.md on disk: \['trace-addon'\]",
+    ):
+        gates.check_single_root_skill()
+
+
+@pytest.mark.parametrize("mutated_surface", ["router", "runtime"])
+def test_single_root_inventory_rejects_partially_advertised_external_workflow(
+    tmp_path: Path, monkeypatch, mutated_surface: str
+) -> None:
+    names = {
+        "router": set(_REQUIRED_WORKFLOWS),
+        "runtime": set(_REQUIRED_WORKFLOWS),
+    }
+    names[mutated_surface].add("trace-addon")
+    gates = _inventory_gate_fixture(
+        tmp_path,
+        monkeypatch,
+        disk_names=_REQUIRED_WORKFLOWS | {"trace-addon"},
+        router_names=names["router"],
+        runtime_names=names["runtime"],
+        external_names=_EXTERNAL_WORKFLOWS | {"trace-addon"},
+    )
+    with pytest.raises(
+        gates.GateFailure,
+        match=r"separately sourced workflow inventory mismatch",
+    ):
+        gates.check_single_root_skill()
+
+
+def test_secondary_source_overlap_does_not_exclude_core_workflow(
+    tmp_path: Path, monkeypatch
+) -> None:
+    gates = _inventory_gate_fixture(
+        tmp_path,
+        monkeypatch,
+        external_names=_EXTERNAL_WORKFLOWS | {"academic-paper"},
+    )
+    package = json.loads(gates.PACKAGE_MANIFEST.read_text(encoding="utf-8"))
+    assert gates._external_workflow_names(package) == _EXTERNAL_WORKFLOWS
+
+
+def test_incidental_table_does_not_count_as_root_router_enumeration(
+    tmp_path: Path, monkeypatch
+) -> None:
+    gates = _inventory_gate_fixture(
+        tmp_path,
+        monkeypatch,
+        disk_names=_REQUIRED_WORKFLOWS | {"unrouted-workflow"},
+        router_trailer=(
+            "### Incidental comparison\n\n"
+            "| Note | Example |\n"
+            "|---|---|\n"
+            "| Not a route | `ars/unrouted-workflow/WORKFLOW.md` |\n\n"
+        ),
+    )
+    with pytest.raises(
+        gates.GateFailure,
+        match=r"missing_from_root_router=\['unrouted-workflow'\]",
+    ):
+        gates.check_single_root_skill()
+
+
+def test_incidental_table_before_router_table_is_rejected(
+    tmp_path: Path, monkeypatch
+) -> None:
+    gates = _inventory_gate_fixture(
+        tmp_path,
+        monkeypatch,
+        router_preamble=(
+            "| Note | Example |\n"
+            "|---|---|\n"
+            "| Not a route | `ars/deep-research/WORKFLOW.md` |\n\n"
+        ),
+    )
+    with pytest.raises(
+        gates.GateFailure,
+        match=r"table headers must include exactly one 'User intent' and 'Read first'",
+    ):
+        gates.check_single_root_skill()
+
+
+def test_route_like_path_outside_read_first_column_is_rejected(
+    tmp_path: Path, monkeypatch
+) -> None:
+    gates = _inventory_gate_fixture(tmp_path, monkeypatch)
+    root_skill = gates.SUITE_ROOT / "SKILL.md"
+    text = root_skill.read_text(encoding="utf-8")
+    text = text.replace(
+        "| academic-paper intent | `ars/academic-paper/WORKFLOW.md` |",
+        "| `ars/academic-paper/WORKFLOW.md` | Not a route |",
+    )
+    root_skill.write_text(text, encoding="utf-8")
+    with pytest.raises(
+        gates.GateFailure,
+        match=r"Read first cell must contain exactly one",
+    ):
+        gates.check_single_root_skill()
 
 
 def test_model_tiering_lint_accepts_separately_vendored_experiment_agents() -> None:

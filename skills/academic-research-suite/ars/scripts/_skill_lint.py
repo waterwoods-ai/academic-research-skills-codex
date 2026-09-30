@@ -23,11 +23,25 @@ check_firm_rules_sync — predate this helper; migrating them is a follow-up.)
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
 
 import yaml
+
+# One row of the `.claude/CLAUDE.md` § "Skills Overview" table. The first cell is
+# the backticked skill directory name followed by its `vX.Y.Z` token. Two forms
+# are shared so the lints agree on what a row is:
+#   PREFIX — name only. check_skill_inventory_parity.py uses it to find every
+#            row that names a skill, so a row can never hide from the parity
+#            check by omitting its version.
+#   FULL   — name + version. check_version_consistency.py parses versions with
+#            it; the parity lint reports any PREFIX row that is not also a FULL
+#            row, closing the gap where a version-less row is invisible to the
+#            version lint (it only iterates FULL matches).
+SKILLS_TABLE_ROW_PREFIX = r"^\|\s*`([a-z0-9-]+)`"
+SKILLS_TABLE_ROW_FULL = SKILLS_TABLE_ROW_PREFIX + r"\s+v([A-Za-z0-9.\-_+]+)\s*\|"
 
 SKIP_DIRS = frozenset(
     {"shared", "scripts", "docs", ".git", ".github", "examples", ".local-plans", ".claude"}
@@ -44,15 +58,38 @@ class FrontmatterError(Exception):
     """
 
 
+def _uses_codex_workflow_overlay(root: Path) -> bool:
+    """Return whether *root* is the vendored tree of the Codex package."""
+    manifest_path = root.parent / "manifest.json"
+    if not manifest_path.is_file():
+        return False
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+        return False
+    return isinstance(manifest, dict) and manifest.get("generated_for") == "codex"
+
+
 def iter_skill_files(root: Path) -> list[Path]:
-    """Top-level SKILL.md files only. Skips SKIP_DIRS."""
+    """Top-level workflow entry files only. Skips SKIP_DIRS.
+
+    Upstream uses ``SKILL.md``. The Codex distribution deliberately renames
+    those four entry files to ``WORKFLOW.md`` so only its root router is
+    discoverable; the adjacent package manifest is the authority for that
+    fallback.
+    """
     results: list[Path] = []
+    codex_overlay = _uses_codex_workflow_overlay(root)
     for child in sorted(root.iterdir()):
         if not child.is_dir() or child.name in SKIP_DIRS:
             continue
         skill_md = child / "SKILL.md"
         if skill_md.is_file():
             results.append(skill_md)
+            continue
+        workflow_md = child / "WORKFLOW.md"
+        if codex_overlay and workflow_md.is_file():
+            results.append(workflow_md)
     return results
 
 
@@ -113,7 +150,7 @@ def check_metadata_field(
     violations: list[str] = []
     skills = iter_skill_files(root)
     if not skills:
-        violations.append(f"no SKILL.md files found under {root}")
+        violations.append(f"no workflow entry files found under {root}")
         return violations
     for path in skills:
         try:
@@ -222,18 +259,21 @@ def norm_ws(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def read_or_exit2(root: Path, rel: str) -> str:
+def read_or_exit2(root: Path, rel: str, *, exact: bool = False) -> str:
     """Read a required lint surface; a missing file is an invocation error
-    (exit 2), never a lint failure (exit 1)."""
+    (exit 2), never a lint failure (exit 1). With `exact`, line endings stay
+    as stored instead of being translated to LF."""
     p = root / rel
     if not p.is_file():
         print(f"ERROR: required file missing: {rel}", file=sys.stderr)
         raise SystemExit(2)
-    return p.read_text(encoding="utf-8")
+    return p.read_bytes().decode("utf-8") if exact else p.read_text(encoding="utf-8")
 
 
 def run_lint(field: str, legal_values: set[str] | frozenset[str], ok_message: str) -> int:
-    """argparse + check + print + exit-code wrapper used by both check scripts."""
+    """argparse + check + print + exit-code wrapper (check_task_type.py;
+    check_data_access_level.py grew its own #756 pin-layer main and no
+    longer uses this)."""
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--path",
