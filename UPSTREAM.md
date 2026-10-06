@@ -5,7 +5,7 @@ Since 2026-10-06 it is maintained as its own product (Tom's decision): the
 security track is part of the suite, any file may be edited, and upstream is
 a reference to learn from, not a source to merge.
 
-- **Last reviewed upstream commit: 70b412f** (ARS-Codex aligned with ARS v3.22.2, 2026-09-28)
+- **Last reviewed upstream commit: 52228e8** (ARS-Codex aligned with ARS v3.23.0, reviewed 2026-10-06)
 - Upstream remote: `upstream` → https://github.com/Imbad0202/academic-research-skills-codex.git
 - `main` stays frozen at the last merged upstream commit as a comparison
   baseline; all work is on `dev`.
@@ -33,3 +33,4 @@ file, author credits) and keep the work non-commercial.
 | Date | Upstream range | Outcome |
 |---|---|---|
 | 2026-09-30 | `a43aaab..70b412f` (6 upstream changes) | Merged in full: the last merge before the 2026-10-06 policy change |
+| 2026-10-06 | `70b412f..52228e8` (1 change: ARS-Codex aligned with ARS v3.23.0, including `sr-screener`) | **PORT** with `git cherry-pick -x`; applied cleanly, and our Security-First Default section in `academic-research-suite` is kept. Pre-port state: branch `backup/pre-port-3.23.0`. |

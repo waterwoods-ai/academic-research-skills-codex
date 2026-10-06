@@ -1,13 +1,13 @@
 {
   "name": "ars-codex",
   "version": "3.23.0",
-  "description": "ARS-Codex is the Codex-native sibling of Academic Research Skills for deep research, academic writing, manuscript review, protocol-driven study screening, research pipelines, and experiment planning.",
+  "description": "ARS-Codex is the Codex-native sibling of Academic Research Skills for deep research, academic writing, manuscript review, protocol-driven study screening, research pipelines, and experiment planning. Based on Academic Research Skills by Cheng-I Wu (CC-BY-NC 4.0).",
   "author": {
-    "name": "Imbad0202",
-    "url": "https://github.com/Imbad0202"
+    "name": "Tom",
+    "url": "https://github.com/waterwoods-ai"
   },
-  "homepage": "https://github.com/Imbad0202/academic-research-skills-codex",
-  "repository": "https://github.com/Imbad0202/academic-research-skills-codex",
+  "homepage": "https://github.com/waterwoods-ai/academic-research-skills-codex",
+  "repository": "https://github.com/waterwoods-ai/academic-research-skills-codex",
   "license": "CC-BY-NC-4.0",
   "keywords": [
     "academic",
@@ -27,14 +27,14 @@
     "displayName": "ARS-Codex",
     "shortDescription": "Codex-native research, writing, review, and experiment workflows.",
     "longDescription": "ARS-Codex is the Codex-native sibling of Academic Research Skills. It supports Socratic research scoping, literature and systematic reviews, protocol-driven study screening with blinded reviewers, IMRaD paper planning and drafting, manuscript revision coaching, peer-review simulation, citation and integrity checks, experiment planning, and staged research-to-paper workflows.",
-    "developerName": "Imbad0202",
+    "developerName": "Tom",
     "category": "Research",
     "capabilities": [
       "Interactive",
       "Read",
       "Write"
     ],
-    "websiteURL": "https://github.com/Imbad0202/academic-research-skills-codex",
+    "websiteURL": "https://github.com/waterwoods-ai/academic-research-skills-codex",
     "privacyPolicyURL": "https://github.com/Imbad0202/academic-research-skills-codex/blob/main/SECURITY.md",
     "termsOfServiceURL": "https://github.com/Imbad0202/academic-research-skills-codex/blob/main/LICENSE",
     "defaultPrompt": [
