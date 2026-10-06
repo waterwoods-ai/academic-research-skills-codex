@@ -22,7 +22,7 @@ metadata:
   version: "0.1.0"
   last_updated: "2026-08-14"
   status: active
-  data_access_level: verified_only
+  data_access_level: raw
   task_type: open-ended
   overlay: true
   related_skills:
@@ -74,7 +74,7 @@ Read the relevant reference BEFORE the corresponding task:
 | Pre-registering an experiment / evaluation integrity / research-integrity self-audit (freeze success criteria before running, no cherry-picking, anti-HARKing, claim-vs-artifact) — load at S4/S5, S7/S8, S8.5 | `references/research_integrity_protocol.md` |
 | Step-by-step Socratic mentor (idea→submission, one step per turn, stateful) — NOT ars-plan's whole-plan-at-once | `references/security_mentor_protocol.md` |
 | Subfield reviewer bar / best practice (load at S1/S2/S3/S7) | `references/knowledge_index.md` |
-| Skill self-check (run manually or via `git sync-upstream`) | `tests/run_all_checks.sh` → behavior linter + workspace validator + knowledge-index consistency |
+| Skill self-check (run before every commit and after porting an upstream change) | `tests/run_all_checks.sh` → behavior linter + workspace validator + knowledge-index consistency |
 | Post-submission / post-review retrospective (L2 knowledge distillation) | `references/research_loop_protocol.md` § S8.5 + `references/knowledge_notes/` |
 
 ## Overrides of stock defaults

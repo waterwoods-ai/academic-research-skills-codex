@@ -46,12 +46,19 @@ If its `Fetched` timestamp is older than 7 days, refresh first:
 `python3 skills/security-track/scripts/fetch_deadlines.py`. If the fetch fails,
 say the calendar is stale — do not fill in dates from model memory.
 
-## Repo conventions (fork hygiene)
+## Repo conventions (own product; upstream is a reference)
 
-- `main` mirrors upstream (ff-only); ALL personal work goes on `dev`.
-- Customizations are additive only: the `skills/security-track/` and `skills/novelty-engine/` skills + their `plugins/ars-codex/skills/<name>/` mirrors (or this file).
-  Never edit upstream-owned files — that is what keeps `git sync-upstream`
-  conflict-free.
+- Since 2026-10-06 this repository is maintained as its own product (Tom's
+  decision): the security track and novelty-engine are part of the suite and
+  any file may be edited. Nothing is merged from upstream any more.
+- All work is on `dev`; `main` is frozen at the last merged upstream commit as
+  a comparison baseline.
+- Upstream updates are reviewed and ported by hand: `git upstream-review`,
+  then port what is worth having. Procedure, last reviewed upstream change and
+  log: `UPSTREAM.md`.
+- Upstream is CC-BY-NC 4.0: keep its attribution and stay non-commercial.
+- Our skills live in `skills/<name>/` with a copy in
+  `plugins/ars-codex/skills/<name>/`; keep the two identical.
 
 ## Review & execution conventions
 

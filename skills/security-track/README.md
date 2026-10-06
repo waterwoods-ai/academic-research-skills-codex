@@ -4,9 +4,9 @@
 
 > 本 fork 在上游 ARS-Codex（`academic-research-suite`）之上增加第二个 skill
 > `security-track`：面向安全顶会（四大 + tier-2）研究的覆盖层，校准方向为
-> CPS / IoT / AI 安全。上游文件零改动（codex 插件清单 `"skills": "./skills/"`
-> 为目录自动发现，新 skill 放入即注册）。`main` 保持 upstream 纯净镜像，
-> 全部定制在 `dev` 分支（GitHub 默认分支已设为 `dev`）。
+> CPS / IoT / AI 安全。2026-10-06 起本仓库作为独立产品维护：任何文件都可修改，
+> 不再从上游合并，上游更新经审阅后手工移植（见仓库根目录 `UPSTREAM.md`）。
+> 全部工作在 `dev` 分支（GitHub 默认分支已设为 `dev`）。
 
 ## 这个 skill 包含什么
 
@@ -20,13 +20,13 @@
 | `references/perspective_retrieval_protocol.md` | 视角驱动检索协议（STORM 检索侧机制改造，opt-in） |
 | `references/conference_ranking_2025.json` | 22 会 CIF 排名快照（每年更新） |
 | `references/deadlines_current.md` | 截稿日历（**生成文件，勿手改**） |
-| `scripts/fetch_deadlines.py` | 截稿日历拉取脚本（每次 `git sync-upstream` 自动执行，同步到 plugins/ 镜像） |
+| `scripts/fetch_deadlines.py` | 截稿日历拉取脚本（超过 7 天自动重拉；拉完同步到 plugins/ 镜像） |
 | `contracts/reviewer/security_full.json` | 安全顶会版 sprint contract（盲态预提交标尺；Schema 13.2 验证通过） |
 | `references/research_loop_protocol.md` | 研究闭环协议 S0–S8：gap→课题→方法（novelty+contribution）→证伪实验→执行→有界改进→论文 |
 
 本 skill 在仓库中有两份拷贝：`skills/security-track/`（源，直装路径）与
-`plugins/ars-codex/skills/security-track/`（插件物化镜像）。修改源后由
-`git sync-upstream` 别名同步日历；其余文件改动需手动 `cp` 到镜像。
+`plugins/ars-codex/skills/security-track/`（插件物化镜像）。修改源后手动 `cp` 到镜像
+（日历文件也一样）。
 
 ## 安装（Codex）
 
@@ -89,8 +89,8 @@ AI security 等触发词）。也可显式调用 `$security-track`。用户为�
 ## 维护（fork 工作流）
 
 ```bash
-git sync-upstream   # 拉 upstream → ff-only 更新 main → 推送 → 合并进 dev → 刷新日历（含 plugins/ 镜像）
+git upstream-review   # 拉取上游，列出上次审阅之后的改动和文件（不合并）
 ```
 
-定制永远走加法：新文件放本目录 + 同步到 plugins/ 镜像；不改上游文件。
+上游的改动逐项审阅后手工移植，结论记在 `UPSTREAM.md`；改动同步到 plugins/ 镜像。
 venue 档案钉结构性事实；页数、轮次会漂移，临近投稿以当年 CFP 为准。
