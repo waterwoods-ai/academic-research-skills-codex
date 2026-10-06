@@ -8,8 +8,10 @@ assumes ML/journal conventions; the rules below override those defaults.
 
 Unless the user says otherwise, every paper task targets a security venue:
 the Big 4 (IEEE S&P, NDSS, ACM CCS, USENIX Security) or a tier-2 venue from
-the tracked list. If a task is explicitly NOT security research, ignore this
-overlay and use stock behavior.
+the tracked list. Since 2026-10-06 this is built into the suite (the
+Security-First Default section of `academic-research-suite`). When the stock
+defaults apply instead is decided only by the opt-out rule in
+`skills/security-track/SKILL.md` § Activation.
 
 ## Required reading before paper work
 

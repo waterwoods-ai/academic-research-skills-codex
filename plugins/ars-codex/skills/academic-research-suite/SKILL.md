@@ -43,6 +43,10 @@ The internal workflow entry files are named `WORKFLOW.md`, not `SKILL.md`, so
 Codex registers only this root router skill instead of exposing every vendored
 upstream workflow as a separate skill.
 
+## Security-First Default
+
+**Security-first default (this suite):** every research or paper task targets a security venue — the Big 4 (IEEE S&P, NDSS, ACM CCS, USENIX Security) or a tier-2 venue — unless the opt-out rule in the `security-track` skill (§ Activation) holds. Before configuring any ARS skill or agent for such a task, load `security-track` and apply its § Overrides of stock ARS defaults: IEEE/ACM numeric citations instead of APA 7.0; the security chapter structure with an explicit Threat Model and Ethics Considerations instead of IMRaD, sized by the venue's page limit; the five security reviewer personas with the target venue's decision vocabulary; double-blind anonymity; and conference deadlines only from its `deadlines_current.md`.
+
 ## Workflow Router
 
 Apply the routing core before choosing a workflow or dispatching an agent. The

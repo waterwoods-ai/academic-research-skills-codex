@@ -42,12 +42,31 @@ and formatting defaults.
 
 ## Activation
 
-Activate whenever a paper task targets a security venue — the Big 4
-(IEEE S&P, NDSS, ACM CCS, USENIX Security) or a tier-2 venue in
-`references/conference_ranking_2025.json`. When the user's profile says
-their research is security (e.g., CPS / IoT / AI security), treat security
-as the default target and this overlay as active for every paper task
-unless the user says otherwise.
+This suite is **security-first**. The Security-First Default section of the
+`academic-research-suite` router tells the agent to load this skill for every
+research or paper task, so it applies even in a folder without a project
+`AGENTS.md` anchor. Venues: the Big 4 (IEEE S&P, NDSS, ACM CCS, USENIX
+Security) or a tier-2 venue in `references/conference_ranking_2025.json`.
+
+**Opt-out rule** — the one place that decides when the stock ARS defaults
+(APA 7.0, IMRaD, journal-field reviewer panel, word counts) apply instead:
+
+- **The user says so** ("not security research", "use APA") → stock
+  defaults for that task.
+- **A non-security target venue** (an ML venue such as NeurIPS / ICML /
+  ICLR, or a journal outside security) → that venue's own template,
+  citation style, length and review form. A paper with an adversary keeps
+  its threat-model section wherever it goes.
+- **A security journal** (IEEE TDSC, IEEE TIFS, ACM TOPS, Computers &
+  Security) → partial: keep the security structure, numeric citations and
+  the security personas; take length and decision vocabulary (Minor / Major
+  Revision) from the journal's author guidelines, not a conference page limit.
+- **Grant proposals, theses, teaching material** → the funder's or
+  institution's structure; this skill still supplies the security content
+  (threat model, venue and prior-work knowledge).
+- **Unclear** (no venue named, topic not obviously security) → stay
+  security-first; do not ask just to settle the default.
+
 
 ## Reference routing
 
