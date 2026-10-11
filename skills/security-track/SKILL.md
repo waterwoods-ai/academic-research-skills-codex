@@ -20,7 +20,7 @@ description: >
   structure, subfield reviewer bar, retrospective, lessons learned, knowledge index, mentor me, guide me step by step, be my research mentor, multi-agent lab, research team roles, Reviewer #2, claims register, reject reasons, agent refused, pre-registration, pre-register, research integrity, cherry-picking, seed hacking, HARKing, data leakage, eval-set overfitting, reproducibility check, humanize, humanizer, polish prose, language polish, de-slop, remove AI tells, AI slop, clarity pass, find research topic, scout topic, research gap mapping, Elicit, Litmaps, verify research topic, topic verification, stress-test my topic, novelty check, build on this paper, 一步一步指导, 带我完成, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计, 精读, 拆解论文, 预注册, 研究诚信, 实验诚信, 润色, 语言润色, 去AI味, 选题, 找课题, 验证课题, 查新.
 metadata:
   version: "0.1.0"
-  last_updated: "2026-08-14"
+  last_updated: "2026-10-11"
   status: active
   data_access_level: raw
   task_type: open-ended
@@ -162,8 +162,14 @@ ars-review/
 └── round-1/
     ├── decision.md       verdict + numbered task list + panel reports
     ├── compliance.md     Phase-0 table
-    └── manuscript-snapshot.<ext>   copy of the paper as reviewed
+    ├── manuscript-snapshot.<ext>   copy of the paper as reviewed
+    ├── changelog.md      written by the reviser: ID → CHANGE | ANSWER | LIMITATION → where
+    └── response.md       written by the reviser: answers to items the paper does not need to change
 ```
+
+Revisions follow `references/major_revision_playbook.md` §6: each item is
+closed by a CHANGE to the paper, an ANSWER in `response.md`, or one
+LIMITATION line, so review rounds do not turn the paper into a rebuttal.
 
 On `re-review`, NOTHING needs to be supplied. Defaults, in order:
 1. Venue + paper path from `state.json`; latest `round-N/decision.md` is
@@ -179,7 +185,14 @@ On `re-review`, NOTHING needs to be supplied. Defaults, in order:
    changelog is an index; every verdict must cite evidence of the class the
    task demands:
    - *Text task* (clarify, add section, fix claim) → quote the revised
-     manuscript text; the diff against the snapshot must show it.
+     manuscript text; the diff against the snapshot must show it, and the
+     new text must pass the reader test (playbook §6): a reader who never
+     saw this review would need it.
+   - *Answered task* (disposition ANSWER) → the paper is unchanged by
+     design; judge the answer in `round-N/response.md`. RESOLVED if it is
+     correct and points to text or ledger evidence that already exists;
+     NOT RESOLVED if the paper genuinely needs the change. Never demand new
+     paper text that only a reviewer would read.
    - *Experiment/result task* (add adaptive evaluation, new baseline,
      ablation, more devices) → the ledger (`./ledger/` or the paper's
      provenance record) must contain a run for it, and the numbers in the
