@@ -20,7 +20,7 @@ description: >
   structure, subfield reviewer bar, retrospective, lessons learned, knowledge index, mentor me, guide me step by step, be my research mentor, multi-agent lab, research team roles, Reviewer #2, claims register, reject reasons, agent refused, pre-registration, pre-register, research integrity, cherry-picking, seed hacking, HARKing, data leakage, eval-set overfitting, reproducibility check, humanize, humanizer, polish prose, language polish, de-slop, remove AI tells, AI slop, clarity pass, find research topic, scout topic, research gap mapping, Elicit, Litmaps, verify research topic, topic verification, stress-test my topic, novelty check, build on this paper, 一步一步指导, 带我完成, 安全会议, 安全论文, 四大安全会议, 威胁模型, 顶会, 研究缺口, 延伸课题, 新方法, 创新点, 实验设计, 精读, 拆解论文, 预注册, 研究诚信, 实验诚信, 润色, 语言润色, 去AI味, 选题, 找课题, 验证课题, 查新.
 metadata:
   version: "0.1.0"
-  last_updated: "2026-10-11"
+  last_updated: "2026-10-13"
   status: active
   data_access_level: raw
   task_type: open-ended
@@ -81,7 +81,7 @@ Read the relevant reference BEFORE the corresponding task:
 | Building or checking a threat model | `references/threat_model_workbench.md` |
 | Connecting the work to CVE / MITRE ATT&CK (mapping, technique ids) | `references/cve_attack_mapping.md` |
 | Changing / improving / substituting a method, esp. to rescue a failing experiment (anti-rename) | `references/method_change_provenance.md` |
-| Deep-read ONE paper (dissect / peruse / 精读) — NOT multi-paper lit-review | `references/paper_dissection_protocol.md` |
+| Deep-read ONE paper (dissect / peruse / 精读) — NOT multi-paper lit-review; also the overlap perusal required before a found paper narrows or drops any claim (iron rule 7) | `references/paper_dissection_protocol.md` |
 | Peer-review simulation | `references/security_reviewer_personas.md` |
 | Ranking / tier questions | `references/conference_ranking_2025.json` |
 | Reviewer comments / rebuttal / revision / re-review | `references/major_revision_playbook.md` |

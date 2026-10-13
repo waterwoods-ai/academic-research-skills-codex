@@ -17,8 +17,8 @@ description: >
   novel method, propose a method, dogma, unstated assumption, cross-domain,
   observation-driven, replication anomaly, formalize this method, falsification experiment, 生成想法, 提出新方法, 形式化.
 metadata:
-  version: "1.3.0"
-  last_updated: "2026-10-04"
+  version: "1.4.0"
+  last_updated: "2026-10-13"
   status: active
   data_access_level: raw
   task_type: open-ended
@@ -65,7 +65,7 @@ rules and gates govern; this skill supplies the machinery.
 |---|---|---|
 | 0a–0d topic, discovery, gaps, go/no-go | S0–S2 | Ancestor and adjacent-method-family queries; gaps in the three-field form; a GO here does not replace the topic verification gate before S3 |
 | 1 dogma extraction | S2 (the dogma an RQ challenges), S3 propose mode | Each dogma is tied to a threat-model element (adversary, asset, trust boundary) |
-| 2 novelty verification | S3 | Verdicts are search-bounded: NOVEL → NOVEL-WITHIN-SEARCH, PARTIALLY EXPLORED → INCREMENTAL, ALREADY PUBLISHED → KNOWN |
+| 2 novelty verification | S3 | Verdicts are search-bounded: NOVEL → NOVEL-WITHIN-SEARCH, PARTIALLY EXPLORED → INCREMENTAL, ALREADY PUBLISHED → KNOWN; INCREMENTAL and KNOWN become final only after the overlap perusal of the matching paper (iron rule 7) |
 | 3A cross-domain synthesis | S3 propose mode, assumption-breaking | The transplant is justified against the threat model |
 | 3B limitation-driven generation | S3 propose mode, limitation-driven | Starts from the limitation ledger; the task and the adversary stay fixed |
 | 3C observation-driven generation | S3 propose mode, observation-driven | Located observations, rival explanations and discriminating probes; empirical-only leads return to S2 |
