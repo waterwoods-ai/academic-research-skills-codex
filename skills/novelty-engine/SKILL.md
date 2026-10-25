@@ -15,10 +15,10 @@ description: >
   obstacle, formalize a method, or design falsification
   experiments. Triggers: novelty engine, idea generation, generate ideas,
   novel method, propose a method, dogma, unstated assumption, cross-domain,
-  observation-driven, replication anomaly, formalize this method, falsification experiment, 生成想法, 提出新方法, 形式化.
+  observation-driven, replication anomaly, formalize this method, falsification experiment.
 metadata:
-  version: "1.4.0"
-  last_updated: "2026-10-13"
+  version: "1.4.1"
+  last_updated: "2026-10-25"
   status: active
   data_access_level: raw
   task_type: open-ended

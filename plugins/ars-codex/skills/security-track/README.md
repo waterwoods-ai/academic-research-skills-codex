@@ -1,48 +1,51 @@
-# Security Track — 安装与使用（Codex 版）
+# Security Track — Installation and Usage (Codex edition)
 
-> 日常使用手册(全流程场景速查 + 研究闭环 S0–S8):[`HOWTO.md`](../../HOWTO.md)
+> Day-to-day manual (quick reference for every stage, plus the research loop S0–S8): [`HOWTO.md`](../../HOWTO.md)
 
-> 本 fork 在上游 ARS-Codex（`academic-research-suite`）之上增加第二个 skill
-> `security-track`：面向安全顶会（四大 + tier-2）研究的覆盖层，校准方向为
-> CPS / IoT / AI 安全。2026-10-06 起本仓库作为独立产品维护：任何文件都可修改，
-> 不再从上游合并，上游更新经审阅后手工移植（见仓库根目录 `UPSTREAM.md`）。
-> 全部工作在 `dev` 分支（GitHub 默认分支已设为 `dev`）。
+> This fork adds a second skill, `security-track`, to the upstream ARS-Codex suite
+> (`academic-research-suite`): an overlay for research aimed at top security
+> conferences (the Big 4 and tier-2), calibrated for CPS, IoT and AI security.
+> Since 2026-10-06 this repository is maintained as its own product: any file may be
+> edited, and nothing is merged from upstream any more; upstream updates are reviewed
+> and ported by hand (see `UPSTREAM.md` at the repository root).
+> All work happens on the `dev` branch (the GitHub default branch is `dev`).
 
-## 这个 skill 包含什么
+## What this skill contains
 
-| 文件 | 内容 |
+| File | Contents |
 |---|---|
-| `SKILL.md` | 触发条件 + 对 stock 套件的覆盖规则（引用格式、论文结构、审稿模拟、双盲、截稿铁律） |
-| `references/big4_venue_profiles.md` | 四大会档案（经官方 CFP 逐条核实，2023–2027 各版） |
-| `references/security_paper_conventions.md` | 安全论文行文规范：Threat Model 章、评估门槛、责任披露、匿名化清单 |
-| `references/security_reviewer_personas.md` | 5 人安全审稿面板 + 标准拒稿锚点 |
-| `references/major_revision_playbook.md` | 四大会多轮评审实战手册：rebuttal / revision / re-review + 模式映射 |
-| `references/perspective_retrieval_protocol.md` | 视角驱动检索协议（STORM 检索侧机制改造，opt-in） |
-| `references/conference_ranking_2025.json` | 22 会 CIF 排名快照（每年更新） |
-| `references/deadlines_current.md` | 截稿日历（**生成文件，勿手改**） |
-| `scripts/fetch_deadlines.py` | 截稿日历拉取脚本（超过 7 天自动重拉；拉完同步到 plugins/ 镜像） |
-| `contracts/reviewer/security_full.json` | 安全顶会版 sprint contract（盲态预提交标尺；Schema 13.2 验证通过） |
-| `references/research_loop_protocol.md` | 研究闭环协议 S0–S8：gap→课题→方法（novelty+contribution）→证伪实验→执行→有界改进→论文 |
+| `SKILL.md` | Triggers, and the rules that override the stock suite's defaults (citation style, paper structure, review simulation, double-blind, the deadline rule) |
+| `references/big4_venue_profiles.md` | Big-4 venue profiles (checked item by item against the official CFPs, 2023–2027 editions) |
+| `references/security_paper_conventions.md` | Security-paper writing conventions: the Threat Model section, the evaluation bar, responsible disclosure, the anonymization checklist |
+| `references/security_reviewer_personas.md` | The five-person security reviewer panel and the standard rejection anchors |
+| `references/major_revision_playbook.md` | Field manual for multi-round review at the Big 4: rebuttal / revision / re-review, mapped to the suite's modes |
+| `references/perspective_retrieval_protocol.md` | Perspective-driven retrieval protocol (an adaptation of STORM's retrieval-side mechanism; opt-in) |
+| `references/conference_ranking_2025.json` | Snapshot of the 22-conference CIF ranking (updated yearly) |
+| `references/deadlines_current.md` | Deadline calendar (**generated file, do not edit by hand**) |
+| `scripts/fetch_deadlines.py` | Fetches the deadline calendar (re-fetches automatically when it is older than 7 days, then syncs it to the plugins/ mirror) |
+| `contracts/reviewer/security_full.json` | Sprint contract for security venues (blind pre-commitment rubric; validates against Schema 13.2) |
+| `references/research_loop_protocol.md` | Research loop protocol S0–S8: gap → topic → method (novelty + contribution) → falsification experiments → execution → bounded improvement → paper |
 
-本 skill 在仓库中有两份拷贝：`skills/security-track/`（源，直装路径）与
-`plugins/ars-codex/skills/security-track/`（插件物化镜像）。修改源后手动 `cp` 到镜像
-（日历文件也一样）。
+This skill has two copies in the repository: `skills/security-track/` (the source,
+used by the direct install) and `plugins/ars-codex/skills/security-track/` (the
+plugin's materialized mirror). After editing the source, `cp` it to the mirror by
+hand (the calendar file too).
 
-## 安装（Codex）
+## Installation (Codex)
 
-插件方式（推荐，一次装齐主套件 + security-track）：
+As a plugin (recommended; installs the main suite and security-track together):
 
 ```bash
-# 若装过 upstream 的 ars-codex，先移除
+# If you installed the upstream ars-codex, remove it first
 codex plugin marketplace add waterwoods-ai/academic-research-skills-codex --ref dev
 codex plugin add ars-codex@ars-codex
 ```
 
-Codex Desktop 图形界面：Plugins → 添加仓库
+In the Codex Desktop app: Plugins → add the repository
 `https://github.com/waterwoods-ai/academic-research-skills-codex.git`
-（默认分支即 `dev`）→ 安装 **ARS-Codex**。
+(the default branch is `dev`) → install **ARS-Codex**.
 
-直装 skill 方式（注意要装两个）：
+As direct skill installs (note that there are two to install):
 
 ```bash
 python3 "$HOME/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
@@ -54,43 +57,53 @@ python3 "$HOME/.codex/skills/.system/skill-installer/scripts/install-skill-from-
   --path skills/security-track --method git
 ```
 
-装完**开新 Codex 会话**生效。更新：`codex plugin marketplace upgrade ars-codex`(内容没变则强制清缓存:`rm -rf ~/.codex/plugins/cache/ars-codex` 后重装——上游版本号不 bump,以免破坏零冲突同步)
-后重新 `codex plugin add`；直装方式先 `rm -rf` 旧目录再重跑 installer。
+Start a **new Codex session** after installing. To update: `codex plugin marketplace
+upgrade ars-codex` (if the content has not changed, clear the cache to force it:
+`rm -rf ~/.codex/plugins/cache/ars-codex`, then reinstall — the upstream version
+number is not bumped, so as not to break conflict-free syncing), then run
+`codex plugin add` again. For the direct installs, `rm -rf` the old directories
+first, then run the installer again.
 
-验证：问一句「NDSS 的 Major Revision 流程是什么」，agent 应去读
-`major_revision_playbook.md` 而非凭记忆作答。
+To verify, ask "What is the NDSS Major Revision process?": the agent should read
+`major_revision_playbook.md` rather than answer from memory.
 
-## 使用
+## Usage
 
-> **关于斜杠命令**：Codex CLI 0.147+ 已移除自定义斜杠命令通道（custom
-> prompts 机制被废弃且不再加载，插件也不携带命令），`/ars-*` 是 Claude Code
-> 专属形态。在 Codex 中用下面两种等价方式调用：
+> **About slash commands:** Codex CLI 0.147+ removed the custom slash-command channel
+> (the custom prompts mechanism is deprecated and no longer loaded, and the plugin
+> ships no commands); `/ars-*` is a Claude Code-only form. In Codex, use either of
+> these two equivalent ways:
 >
-> 1. `$academic-research-suite ars-reviewer <论文>` —— 输入 `$` 后自动补全
-> 2. 直接发裸别名文本：`ars-reviewer <论文>`（skill 触发描述已注册全部
->    ars-* 别名，无斜杠、不经过命令弹窗，最省事）
+> 1. `$academic-research-suite ars-reviewer <paper>` — type `$` to get autocompletion
+> 2. Send the bare alias text: `ars-reviewer <paper>` (the skill's trigger description
+>    registers every ars-* alias; no slash and no command pop-up, the simplest way)
 
-**自动激活**：论文任务涉及安全会议即触发（会议名、threat model、CPS/IoT/
-AI security 等触发词）。也可显式调用 `$security-track`。用户为安全研究方向
-时，所有论文任务默认按安全会议处理；明确说明非安全研究则回退 stock 行为。
+**Automatic activation:** it triggers on any paper task that involves a security
+conference (conference names, threat model, CPS/IoT/AI security and the other
+triggers). You can also call `$security-track` explicitly. When the user works in
+security research, every paper task targets a security conference by default; say
+explicitly that the work is not security research to fall back to the stock behaviour.
 
-| 你要做的事 | overlay 提供 |
+| What you want to do | What the overlay adds |
 |---|---|
-| 选会 / 投稿规划 | venue 档案 + 实时截稿日历 |
-| 文献综述（说「确保覆盖全面」触发视角检索协议） | 6 透镜查询扩展 + 未用检索追问 |
-| 写作 / 大纲 | 安全论文结构、numeric 引用、双盲清单 |
-| 模拟审稿 | 5 人安全面板 + 目标会议的准确判定词汇 |
-| 审稿意见响应 / rebuttal 检查 | 按 venue+判定档的 Roadmap、响应包结构与硬规则审计 |
+| Choose a venue / plan the submission | venue profiles + the live deadline calendar |
+| Literature review (say "make sure the coverage is comprehensive" to trigger the perspective retrieval protocol) | six-lens query expansion + follow-up on unused searches |
+| Writing / outline | security-paper structure, numeric citations, the double-blind checklist |
+| Simulated review | the five-person security panel + the target venue's exact decision vocabulary |
+| Responding to reviews / checking a rebuttal | a roadmap, response-package structure and hard-rule audit for the venue and decision tier |
 
-**截稿日期铁律**：日期只从 `references/deadlines_current.md` 引用；超过 7 天
-先运行 `python3 skills/security-track/scripts/fetch_deadlines.py`；拉取失败时
-明确说明日历过期，绝不凭模型记忆报日期。
+**Deadline rule:** quote dates only from `references/deadlines_current.md`. If it is
+older than 7 days, first run `python3 skills/security-track/scripts/fetch_deadlines.py`;
+if the fetch fails, say clearly that the calendar is stale, and never give dates from
+model memory.
 
-## 维护（fork 工作流）
+## Maintenance (fork workflow)
 
 ```bash
-git upstream-review   # 拉取上游，列出上次审阅之后的改动和文件（不合并）
+git upstream-review   # fetch upstream and list the changes and files since the last review (no merge)
 ```
 
-上游的改动逐项审阅后手工移植，结论记在 `UPSTREAM.md`；改动同步到 plugins/ 镜像。
-venue 档案钉结构性事实；页数、轮次会漂移，临近投稿以当年 CFP 为准。
+Upstream changes are reviewed one by one and ported by hand; the outcome is logged in
+`UPSTREAM.md`, and changes are synced to the plugins/ mirror. The venue profiles pin
+structural facts; page limits and the number of review rounds drift, so check the
+current year's CFP close to submission.
