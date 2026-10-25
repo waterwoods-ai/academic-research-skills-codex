@@ -79,6 +79,7 @@ Read the relevant reference BEFORE the corresponding task:
 | Polishing AI-assisted prose of a security paper (de-slop, remove AI tells, match claims to evidence) — drive the standalone `academic-humanizer` skill with security-venue calibration; run at S8 / revision AFTER content is frozen | `references/security_humanizing_overlay.md` |
 | New research idea — is this a security paper? (framing / novelty type) | `references/security_framing_protocol.md` |
 | Building or checking a threat model | `references/threat_model_workbench.md` |
+| Making or revising any paper figure (plot or diagram): pick the scenario, then build on the venue-sized templates in `templates/figures/` | `references/figure_template_map.md` |
 | Connecting the work to CVE / MITRE ATT&CK (mapping, technique ids) | `references/cve_attack_mapping.md` |
 | Changing / improving / substituting a method, esp. to rescue a failing experiment (anti-rename) | `references/method_change_provenance.md` |
 | Deep-read ONE paper (dissect / peruse / close reading) — NOT multi-paper lit-review; also the overlap perusal required before a found paper narrows or drops any claim (iron rule 7) | `references/paper_dissection_protocol.md` |
@@ -141,6 +142,12 @@ Read the relevant reference BEFORE the corresponding task:
 4. **Anonymity:** strict double-blind is the default; apply the
    anonymization checklist in `references/security_paper_conventions.md`
    during formatting and citation passes.
+5. **Figures:** every figure is chosen from `references/figure_template_map.md`
+   (scenario → template) and built on `templates/figures/sec_figstyle.py`:
+   the target venue's measured column or text width, embedded editable
+   fonts, PDF output checked on export. This replaces the `academic-paper`
+   visualization agent's APA defaults (APA caption format, 3.3 in Arial PNG);
+   captions go below the figure in LaTeX.
 
 ## Review Workspace (stateful multi-round reviews)
 
