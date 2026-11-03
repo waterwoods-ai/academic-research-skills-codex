@@ -17,8 +17,8 @@ description: >
   novel method, propose a method, dogma, unstated assumption, cross-domain,
   observation-driven, replication anomaly, formalize this method, falsification experiment.
 metadata:
-  version: "1.4.1"
-  last_updated: "2026-10-25"
+  version: "1.4.2"
+  last_updated: "2026-11-03"
   status: active
   data_access_level: raw
   task_type: open-ended

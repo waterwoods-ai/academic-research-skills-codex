@@ -20,7 +20,7 @@ description: >
   structure, subfield reviewer bar, retrospective, lessons learned, knowledge index, mentor me, guide me step by step, be my research mentor, multi-agent lab, research team roles, Reviewer #2, claims register, reject reasons, agent refused, pre-registration, pre-register, research integrity, cherry-picking, seed hacking, HARKing, data leakage, eval-set overfitting, reproducibility check, humanize, humanizer, polish prose, language polish, de-slop, remove AI tells, AI slop, clarity pass, find research topic, scout topic, research gap mapping, Elicit, Litmaps, verify research topic, topic verification, stress-test my topic, novelty check, build on this paper.
 metadata:
   version: "0.1.0"
-  last_updated: "2026-10-25"
+  last_updated: "2026-11-03"
   status: active
   data_access_level: raw
   task_type: open-ended
@@ -79,6 +79,7 @@ Read the relevant reference BEFORE the corresponding task:
 | Polishing AI-assisted prose of a security paper (de-slop, remove AI tells, match claims to evidence) — drive the standalone `academic-humanizer` skill with security-venue calibration; run at S8 / revision AFTER content is frozen | `references/security_humanizing_overlay.md` |
 | New research idea — is this a security paper? (framing / novelty type) | `references/security_framing_protocol.md` |
 | Building or checking a threat model | `references/threat_model_workbench.md` |
+| A gap found in the corpus, before any RQ is built on it; a reviewer's prior-work objection before any claim narrows; scope drift over review rounds | `references/gap_deep_dive_protocol.md` |
 | Making or revising any paper figure (plot or diagram): pick the scenario, then build on the venue-sized templates in `templates/figures/` | `references/figure_template_map.md` |
 | Connecting the work to CVE / MITRE ATT&CK (mapping, technique ids) | `references/cve_attack_mapping.md` |
 | Changing / improving / substituting a method, esp. to rescue a failing experiment (anti-rename) | `references/method_change_provenance.md` |
