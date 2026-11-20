@@ -20,7 +20,7 @@ description: >
   structure, subfield reviewer bar, retrospective, lessons learned, knowledge index, mentor me, guide me step by step, be my research mentor, multi-agent lab, research team roles, Reviewer #2, claims register, reject reasons, agent refused, pre-registration, pre-register, research integrity, cherry-picking, seed hacking, HARKing, data leakage, eval-set overfitting, reproducibility check, humanize, humanizer, polish prose, language polish, de-slop, remove AI tells, AI slop, clarity pass, find research topic, scout topic, research gap mapping, Elicit, Litmaps, verify research topic, topic verification, stress-test my topic, novelty check, build on this paper.
 metadata:
   version: "0.1.0"
-  last_updated: "2026-11-16"
+  last_updated: "2026-11-20"
   status: active
   data_access_level: raw
   task_type: open-ended
@@ -80,6 +80,7 @@ Read the relevant reference BEFORE the corresponding task:
 | New research idea — is this a security paper? (framing / novelty type) | `references/security_framing_protocol.md` |
 | Building or checking a threat model | `references/threat_model_workbench.md` |
 | A gap found in the corpus, before any RQ is built on it; a reviewer's prior-work objection before any claim narrows; scope drift over review rounds | `references/gap_deep_dive_protocol.md` |
+| Which projects are active, which paper types the lab takes on, the evidence bar, the headline-result gate, review-round limits, a real review coming back, a resubmission | `references/big4_operating_model.md` |
 | Making or revising any paper figure (plot or diagram): pick the scenario, then build on the venue-sized templates in `templates/figures/` | `references/figure_template_map.md` |
 | Connecting the work to CVE / MITRE ATT&CK (mapping, technique ids) | `references/cve_attack_mapping.md` |
 | Changing / improving / substituting a method, esp. to rescue a failing experiment (anti-rename) | `references/method_change_provenance.md` |
