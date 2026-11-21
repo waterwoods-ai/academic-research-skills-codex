@@ -17,8 +17,8 @@ description: >
   novel method, propose a method, dogma, unstated assumption, cross-domain,
   observation-driven, replication anomaly, formalize this method, falsification experiment.
 metadata:
-  version: "1.4.2"
-  last_updated: "2026-11-03"
+  version: "1.4.3"
+  last_updated: "2026-11-21"
   status: active
   data_access_level: raw
   task_type: open-ended
@@ -143,7 +143,7 @@ The first stage is entirely about deciding WHETHER and WHAT to research. No idea
       - Call `notebook_describe` to get topic summary and suggested topics
       - Call `notebook_query` asking "What is the research topic, focus, and motivation?" to extract the research description
    b. **Literature corpus** from Zotero:
-      - Use zotero-literature skill: `search-items` in the configured collection
+      - Use `zotero-cli`: `zotero-cli --json items list --collection <KEY>` on the configured collection (`zotero-cli --json collections list` gives the key)
       - Extract paper titles, authors, years, and abstracts (at least 2-3 papers required)
       - Save paper summaries to `novelty_engine/00_literature/`
    c. **Additional knowledge context** from Obsidian:
