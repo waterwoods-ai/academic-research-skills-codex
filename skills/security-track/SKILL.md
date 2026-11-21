@@ -80,6 +80,7 @@ Read the relevant reference BEFORE the corresponding task:
 | New research idea — is this a security paper? (framing / novelty type) | `references/security_framing_protocol.md` |
 | Building or checking a threat model | `references/threat_model_workbench.md` |
 | A gap found in the corpus, before any RQ is built on it; a reviewer's prior-work objection before any claim narrows; scope drift over review rounds | `references/gap_deep_dive_protocol.md` |
+| A running project: what was published since the last look, whether another group has published the same idea, the 30-day and pre-gate re-check | the `update-research-topic` skill (Claude Code edition); `references/topic_scouting_overlay.md` |
 | Which projects are active, which paper types the lab takes on, the evidence bar, the headline-result gate, review-round limits, a real review coming back, a resubmission | `references/big4_operating_model.md` |
 | Making or revising any paper figure (plot or diagram): pick the scenario, then build on the venue-sized templates in `templates/figures/` | `references/figure_template_map.md` |
 | Connecting the work to CVE / MITRE ATT&CK (mapping, technique ids) | `references/cve_attack_mapping.md` |
