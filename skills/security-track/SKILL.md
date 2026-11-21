@@ -20,7 +20,7 @@ description: >
   structure, subfield reviewer bar, retrospective, lessons learned, knowledge index, mentor me, guide me step by step, be my research mentor, multi-agent lab, research team roles, Reviewer #2, claims register, reject reasons, agent refused, pre-registration, pre-register, research integrity, cherry-picking, seed hacking, HARKing, data leakage, eval-set overfitting, reproducibility check, humanize, humanizer, polish prose, language polish, de-slop, remove AI tells, AI slop, clarity pass, find research topic, scout topic, research gap mapping, Elicit, Litmaps, verify research topic, topic verification, stress-test my topic, novelty check, build on this paper.
 metadata:
   version: "0.1.0"
-  last_updated: "2026-11-20"
+  last_updated: "2026-11-21"
   status: active
   data_access_level: raw
   task_type: open-ended
